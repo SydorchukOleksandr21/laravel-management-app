@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+@import './general.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* ======== Root Variables ======== */
+:root {
+    --color-primary: #d97706; /* Теплий помаранчевий */
+    --color-secondary: #fbbf24; /* Світло-жовтий */
+    --color-background: #fefce8; /* Світлий фон */
+    --color-text: #4b5563; /* Темно-сірий */
+    --color-border: #e5e7eb; /* Світла сіра рамка */
+    --color-error: #dc2626; /* Червоний для помилок */
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    --transition-fast: 0.2s ease-in-out;
+    --transition-medium: 0.4s ease-in-out;
+
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+}
