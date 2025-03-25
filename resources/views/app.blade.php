@@ -4,14 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
     @vite('resources/css/app.css')
 </head>
 <body class="font-sans">
-<div id="app" class="min-h-screen w-full">
+<div id="app" class="min-h-screen w-full flex">
     @yield('sidebar')
     <div class="flex-1 flex flex-col">
         @yield('header')
-        <main class="flex-1 overflow-y-auto">
+        <main class="m-6 flex-1 overflow-y-auto bg-white shadow rounded-lg p-6">
             @yield('content')
         </main>
     </div>

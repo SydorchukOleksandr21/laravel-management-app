@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form  method="POST" class="form-container">
+                    <form action="{{ route('auth.loginUser') }}" method="POST" class="form-container">
                         @csrf
 
                         <div class="form-group">
@@ -25,7 +25,7 @@
                             <div class="flex items-center justify-between mb-1">
                                 <label for="password" class="form-label">Password</label>
                                 @if (Route::has('password.request'))
-                                    <a class="text-sm text-primary">
+                                    <a href="{{ route('password.request') }}" class="text-sm text-primary">
                                         Forgot Password?
                                     </a>
                                 @endif
@@ -52,7 +52,7 @@
                 <div class="card-footer text-center">
                     <p class="text-sm">
                         Don't have an account?
-                        <a class="text-primary">
+                        <a href="" class="text-primary">
                             Create an account
                         </a>
                     </p>
