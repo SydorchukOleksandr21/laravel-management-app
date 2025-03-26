@@ -22,7 +22,10 @@ Route::prefix("/auth")->name("auth.")
     ->group(function () {
     Route::get("/login", [AuthController::class, "login"])->name("login");
     Route::get("/signup", [AuthController::class, "signup"])->name("signup");
+
     Route::post("/loginUser", [AuthController::class, "loginUser"])->name("loginUser");
+    Route::post("/createUser", [AuthController::class, "createUser"])->name("createUser");
+
     Route::delete("/logout", [AuthController::class, "logout"])->name("logout");
 });
 

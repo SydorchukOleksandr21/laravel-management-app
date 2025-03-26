@@ -5,45 +5,41 @@
         <div class="w-full max-w-md">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-2xl font-semibold text-center">Login</h2>
-                    <p class="text-sm text-muted text-center mt-1">Welcome back! Please login to your account.</p>
+                    <h2 class="text-2xl font-semibold text-center">Register</h2>
+                    <p class="text-sm text-muted text-center mt-1">Create a new account to get started.</p>
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('auth.loginUser') }}" method="POST" class="form-container">
+                    <form action="{{ route('auth.createUser') }}" method="POST" class="form-container">
                         @csrf
 
                         <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input id="name" type="text" name="name" class="form-input" placeholder="Your Name" required>
+                            @error('name')
+                            <p class="text-destructive text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="email" class="form-label">Email</label>
-                            <input id="email" type="email" name="email" class="form-input" placeholder="your@email.com" required autofocus>
+                            <input id="email" type="email" name="email" class="form-input" placeholder="your@email.com" required>
                             @error('email')
                             <p class="text-destructive text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <div class="flex items-center justify-between mb-1">
-                                <label for="password" class="form-label">Password</label>
-                                @if (Route::has('password.request'))
-                                    <a href="{{ route('password.request') }}" class="text-sm text-primary">
-                                        Forgot Password?
-                                    </a>
-                                @endif
-                            </div>
+                            <label for="password" class="form-label">Password</label>
                             <input id="password" type="password" name="password" class="form-input" placeholder="••••••••" required>
                             @error('password')
                             <p class="text-destructive text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="flex items-center mt-4">
-                            <input id="remember" type="checkbox" name="remember" class="form-checkbox">
-                            <label for="remember" class="ml-2 text-sm">Remember me</label>
-                        </div>
-
                         <div class="mt-6">
                             <button type="submit" class="btn btn-primary btn-block">
-                                Login
+                                Register
                             </button>
                         </div>
                     </form>
@@ -51,9 +47,9 @@
 
                 <div class="card-footer text-center">
                     <p class="text-sm">
-                        Don't have an account?
-                        <a href="{{route("auth.signup")}}" class="text-primary">
-                            Create an account
+                        Already have an account?
+                        <a href="{{ route('auth.login') }}" class="text-primary">
+                            Login
                         </a>
                     </p>
                 </div>

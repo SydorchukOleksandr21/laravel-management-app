@@ -13,9 +13,9 @@
     @yield('sidebar')
     <div class="flex-1 flex flex-col">
         @yield('header')
-        <main class="m-6 flex-1 overflow-y-auto bg-white shadow rounded-lg p-6">
+{{--        <main class="m-6 flex-1 overflow-y-auto bg-white shadow rounded-lg p-6">--}}
             @yield('content')
-        </main>
+{{--        </main>--}}
     </div>
 </div>
 
