@@ -17,15 +17,15 @@ Route::get('/dashboard', function () {
 //Route::get("signin", fn() => to_route("auth.create"));
 //Route::get("signout", fn() => to_route("auth.delete"));
 
-
-Route::prefix("/auth")->name("auth.")
+Route::prefix('auth')
+    ->name('auth.')
+    ->controller(AuthController::class)
     ->group(function () {
-    Route::get("/login", [AuthController::class, "login"])->name("login");
-    Route::get("/signup", [AuthController::class, "signup"])->name("signup");
+        Route::get('login', 'login')->name('login');
+        Route::get('signup', 'signup')->name('signup');
 
-    Route::post("/loginUser", [AuthController::class, "loginUser"])->name("loginUser");
-    Route::post("/createUser", [AuthController::class, "createUser"])->name("createUser");
+        Route::post('login', 'loginUser')->name('loginUser');
+        Route::post('signup', 'createUser')->name('createUser');
 
-    Route::delete("/logout", [AuthController::class, "logout"])->name("logout");
-});
-
+        Route::delete('logout', 'logout')->name('logout')->middleware('auth');
+    });
