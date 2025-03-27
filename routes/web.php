@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,5 +28,5 @@ Route::prefix('auth')
         Route::post('login', 'loginUser')->name('loginUser');
         Route::post('signup', 'createUser')->name('createUser');
 
-        Route::delete('logout', 'logout')->name('logout')->middleware('auth');
+        Route::delete('logout', 'logout')->name('logout')->middleware(AuthMiddleware::class);
     });
