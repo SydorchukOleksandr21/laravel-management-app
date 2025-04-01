@@ -2,9 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Position extends Model
+/**
+ * Class Position
+ *
+ * Represents a position in the system.
+ *
+ * @package App\Models
+ */
+class Position extends AbstractModel
 {
-    public
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'positions';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
+     * Get the users associated with the position.
+     *
+     * Defines a many-to-many relationship between Position and User.
+     *
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_positions', 'position_id', 'user_id');
+    }
 }
