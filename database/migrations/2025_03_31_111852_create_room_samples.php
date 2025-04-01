@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedInteger('person_count')->default(2);
             $table->unsignedInteger('square_area')->default(0);
             $table->text('description')->nullable();
+            $table->float('price')->default(0);
+
             $table->timestamps();
         });
     }
