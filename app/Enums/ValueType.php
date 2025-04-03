@@ -6,6 +6,7 @@ enum ValueType: int
 {
     case Number = 0;
     case String = 1;
+    case Boolean = 2;
 
     /**
      * Get a human-readable label.
@@ -15,6 +16,7 @@ enum ValueType: int
         return match ($this) {
             self::Number => 'Number',
             self::String => 'String',
+            self::Boolean => 'Boolean',
         };
     }
 
@@ -23,10 +25,12 @@ enum ValueType: int
      */
     public static function fromInt(int $value): self
     {
-        return match ($value) {
-            0 => self::Number,
-            1 => self::String,
-            default => throw new \InvalidArgumentException("Invalid ValueType: $value"),
-        };
+        foreach (self::cases() as $case) {
+            if ($case->value === $value) {
+                return $case;
+            }
+        }
+
+        throw new \InvalidArgumentException("Invalid ValueType: $value");
     }
 }

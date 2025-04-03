@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
+/**
+ * @property string name
+ * @property string notes
+ * @property int floor
+ * @property float price
+ */
 class Room extends AbstractModel
 {
     /**
@@ -16,6 +20,7 @@ class Room extends AbstractModel
     protected $fillable = [
         'floor',
         'number',
+        'price',
         'notes'
     ];
 }

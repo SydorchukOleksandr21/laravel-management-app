@@ -65,4 +65,35 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Position::class, 'user_positions', 'user_id', 'position_id');
     }
+
+    /**
+     * @param string $positionName
+     * @return bool
+     */
+    public function hasPosition(string $positionName): bool
+    {
+        return $this->positions()->get()->contains('name', $positionName);
+    }
+
+    /**
+     * @param Position $position
+     * @return void
+     */
+    public function assignPosition(Position $position): void
+    {
+        if (!$this->hasPosition($position)) {
+            $this->positions()->attach($position);
+        }
+    }
+
+    /**
+     * @param Position $position
+     * @return void
+     */
+    public function removePosition(Position $position): void
+    {
+        if ($this->hasPosition($position)) {
+            $this->positions()->detach($position);
+        }
+    }
 }
