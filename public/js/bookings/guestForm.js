@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const nameInput = document.getElementById('name');
     const phoneInput = document.getElementById('phone_number');
     const emailInput = document.getElementById('email');
+    const guestFormContainer = document.getElementById('guestFormContainer');
+    const bookingFormContainer = document.getElementById('bookingFormContainer');
+    const saveBookingButton = document.getElementById('saveBooking');
+    const roomSelect = document.getElementById('room_id');
 
     function validateEmail(email) {
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -14,7 +18,26 @@ document.addEventListener('DOMContentLoaded', function() {
         saveButton.disabled = !isFormValid;
     }
 
-    // Перевірка полів при кожній зміні
+    function loadRooms() {
+        const rooms = [
+            { id: 1, name: 'Room 1' },
+            { id: 2, name: 'Room 2' },
+            { id: 3, name: 'Room 3' }
+        ];
+
+        rooms.forEach(room => {
+            const option = document.createElement('option');
+            option.value = room.id;
+            option.textContent = room.name;
+            roomSelect.appendChild(option);
+        });
+    }
+
+    function showBookingForm() {
+        guestFormContainer.classList.add('hidden');
+        bookingFormContainer.classList.remove('hidden');
+    }
+
     nameInput.addEventListener('input', toggleSaveButton);
     phoneInput.addEventListener('input', toggleSaveButton);
     emailInput.addEventListener('input', toggleSaveButton);
@@ -28,27 +51,51 @@ document.addEventListener('DOMContentLoaded', function() {
             email: emailInput.value
         };
 
-        // Відправляємо запит через fetch
         fetch('/guest/update', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Для CSRF захисту
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
             body: JSON.stringify(guestData)
         })
             .then(response => response.json())
             .then(data => {
-                if (data.existed) {
-                } else {
-                    localStorage.setItem('guestData', JSON.stringify(data));
-                }
+                localStorage.setItem('guestData', JSON.stringify(data));
+                showBookingForm();
+                loadRooms();
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     });
 
-    //init
+    saveBookingButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const bookingData = {
+            room_id: roomSelect.value,
+            guest_id: JSON.parse(localStorage.getItem('guestData')).id,
+            date_start: document.getElementById('date_start').value,
+            date_end: document.getElementById('date_end').value
+        };
+
+        fetch('/bookings/save-booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(bookingData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Booking saved:', data);
+            })
+            .catch(error => {
+                console.error('Booking Error:', error);
+            });
+    });
+
     toggleSaveButton();
 });
