@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\GuestController;
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +32,6 @@ Route::prefix('auth')
 
         Route::delete('logout', 'logout')->name('logout')->middleware(AuthMiddleware::class);
     });
+
+Route::resource('booking', BookingController::class);
+Route::resource('guest', GuestController::class);

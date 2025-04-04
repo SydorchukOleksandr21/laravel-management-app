@@ -1,6 +1,6 @@
 @tailwind utilities;
-@tailwind base;
-@tailwind components;
+/*@tailwind base;*/
+/*@tailwind components;*/
 
 :root {
     /* Color Palette */
@@ -11,6 +11,7 @@
     --color-background: #F8FAFC; /* Soft white-blue */
     --color-text: #334155; /* Muted dark blue-gray */
     --color-text-light: #64748B; /* Lighter text for secondary content */
+    --color-button-disabled: #64748B; /* Lighter text for secondary content */
     --color-text-white: #FFFFFF; /* White text */
     --color-border: #CBD5E1; /* Light slate-gray */
     --color-accent: #EAB308; /* Warm golden yellow */
@@ -50,6 +51,12 @@ body {
     color: var(--color-text);
     margin: 0;
     padding: 0;
+}
+
+.phone-number{
+    div.iti{
+        width: 100%;
+    }
 }
 
 /* Form Elements */
@@ -148,6 +155,11 @@ body {
 
 .btn-primary:hover {
     background-color: var(--color-primary-hover);
+}
+
+.btn-primary:disabled {
+    background-color: var(--color-button-disabled);
+    color: var(--color-text-white);
 }
 
 .btn-secondary {
@@ -560,4 +572,3 @@ body {
 .stat-change.negative {
     color: var(--color-error);
 }
-

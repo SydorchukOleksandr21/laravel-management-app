@@ -11,19 +11,21 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->uuid('id')->primary();  // UUID для ідентифікатора
+            $table->uuid('id')->primary();
+
             $table->foreignId('room_id')
-                ->constrained('rooms')  // автоматично створює зовнішній ключ
-                ->onDelete('cascade');  // каскадне видалення
+                ->constrained('rooms')
+                ->onDelete('cascade');
             $table->foreignId('guest_id')
-                ->constrained('guests')  // автоматично створює зовнішній ключ
-                ->onDelete('cascade');  // каскадне видалення
+                ->constrained('guests')
+                ->onDelete('cascade');
+
             $table->integer('pin_code');
             $table->date('date_start');
             $table->date('date_end');
             $table->float('price');
-            $table->boolean('is_paid')->default(false);  // стовпець зі значенням за замовчуванням
-            $table->timestamps();  // стандартні мітки часу для створення та оновлення
+            $table->boolean('is_paid')->default(false);
+            $table->timestamps();
         });
     }
 
