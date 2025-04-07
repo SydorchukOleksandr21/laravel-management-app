@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\RoomSampleController;
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -14,14 +15,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-//Route::resource("auth", AuthController::class);
+//Route::resource("Auth", AuthController::class);
 //
 //
-//Route::get("signin", fn() => to_route("auth.create"));
-//Route::get("signout", fn() => to_route("auth.delete"));
+//Route::get("signin", fn() => to_route("Auth.create"));
+//Route::get("signout", fn() => to_route("Auth.delete"));
 
-Route::prefix('auth')
-    ->name('auth.')
+Route::prefix('Auth')
+    ->name('Auth.')
     ->controller(AuthController::class)
     ->group(function () {
         Route::get('login', 'login')->name('login');
@@ -35,3 +36,4 @@ Route::prefix('auth')
 
 Route::resource('booking', BookingController::class);
 Route::resource('guest', GuestController::class);
+Route::resource('room-sample', RoomSampleController::class);

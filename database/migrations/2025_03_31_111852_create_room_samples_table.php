@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create(RoomSample::tableName(), function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('image_path')->nullable();
             $table->unsignedInteger('person_count')->default(2);
             $table->unsignedInteger('square_area')->default(0);
             $table->text('description')->nullable();

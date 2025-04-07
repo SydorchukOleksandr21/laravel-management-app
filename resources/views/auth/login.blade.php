@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('auth.loginUser') }}" method="POST" class="form-container">
+                    <form action="{{ route('Auth.loginUser') }}" method="POST" class="form-container">
                         @csrf
 
                         <div class="form-group">
@@ -52,7 +52,7 @@
                 <div class="card-footer text-center">
                     <p class="text-sm">
                         Don't have an account?
-                        <a href="{{route("auth.signup")}}" class="text-primary">
+                        <a href="{{route("Auth.signup")}}" class="text-primary">
                             Create an account
                         </a>
                     </p>

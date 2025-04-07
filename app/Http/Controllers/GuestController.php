@@ -2,11 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Guest\GuestRequest;
 use App\Models\Guest;
+use App\Services\Guest\GuestService;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
 {
+    /**
+     * @var GuestService
+     */
+    protected GuestService $guestService;
+
+    /**
+     * @param GuestService $guestService
+     */
+    public function __construct(GuestService $guestService)
+    {
+        $this->guestService = $guestService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -32,22 +47,22 @@ class GuestController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param GuestRequest $request
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(GuestRequest $request, string $id)
     {
-        $validated = $request->validate([
-            'phone_number' => 'required|string',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-        ]);
+        $validated = $request->validated();
 
         $guest = Guest::where('phone_number', $validated['phone_number'])->first();
 
         if ($guest) {
-            $guest->name = $validated['name'];
-            $guest->email = $validated['email'];
-            $guest->save();
+            $this->guestService->update(
+                $guest,
+                email: $validated['email'],
+                name: $validated['name'],
+            );
 
             return response()->json([
                 'id' => $guest->id,
@@ -55,14 +70,14 @@ class GuestController extends Controller
             ]);
 
         } else {
-            $newGuest = Guest::create([
-                'phone_number' => $validated['phone_number'],
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-            ]);
+            $guest = $this->guestService->create(
+                phone_number: $validated['phone_number'],
+                email: $validated['email'],
+                name: $validated['name'],
+            );
 
             return response()->json([
-                'id' => $newGuest->id,
+                'id' => $guest->id,
                 'existed' => false,
             ]);
         }

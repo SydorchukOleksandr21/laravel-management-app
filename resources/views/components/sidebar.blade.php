@@ -126,7 +126,7 @@
         </div>
 
         <div class="border-t p-4">
-            <form action="{{ route('auth.logout') }}" method="POST">
+            <form action="{{ route('Auth.logout') }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="sidebar-link flex items-center gap-2 w-full text-left">

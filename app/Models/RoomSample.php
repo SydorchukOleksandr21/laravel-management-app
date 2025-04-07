@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int person_count
  * @property int square_area
  * @property string description
+ * @property string image_path
  */
 class RoomSample extends AbstractModel
 {
@@ -28,6 +29,7 @@ class RoomSample extends AbstractModel
         'person_count',
         'square_area',
         'description',
+        'image_path',
     ];
 
     /**

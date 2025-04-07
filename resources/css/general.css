@@ -178,6 +178,20 @@ body {
     border: 1px solid transparent;
 }
 
+.btn-error {
+    background-color: var(--color-error);
+    color: var(--color-text-white);
+    border: 1px solid transparent;
+}
+
+.btn-error:hover {
+    background-color: var(--color-error);
+}
+
+.btn-error:disabled {
+    background-color: var(--color-error);
+    color: var(--color-text-white);
+}
 
 .btn-outline {
     background-color: transparent;
@@ -192,6 +206,10 @@ body {
 .btn-block {
     display: flex;
     width: 100%;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Card */
@@ -572,3 +590,31 @@ body {
 .stat-change.negative {
     color: var(--color-error);
 }
+
+
+
+/* general.css */
+.form-select {
+    @apply block w-full p-2 text-sm leading-6 text-gray-900 bg-white border border-gray-300 rounded-md focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
+    height: calc(2.5rem + 2px); /* Matches the height of the input */
+}
+
+.form-option {
+    @apply text-gray-900; /* Apply text color */
+}
+
+/* Option hover and focus effects (optional) */
+.form-select option:hover {
+    @apply bg-gray-100;
+}
+.form-select option:focus {
+    @apply bg-indigo-200;
+}
+
+
+.form-select:focus {
+    border-color: #6366f1; /* focus:border-indigo-500 */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); /* focus:ring-2 focus:ring-indigo-200 */
+}
+

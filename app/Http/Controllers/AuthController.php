@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\auth\LoginRequest;
-use App\Http\Requests\auth\SignupRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\SignupRequest;
 use App\Models\User;
 use App\Services\AuthService;
 use Illuminate\Http\RedirectResponse;
@@ -14,12 +14,12 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view('auth.login');
+        return view('Auth.login');
     }
 
     public function signup()
     {
-        return view('auth.signup');
+        return view('Auth.signup');
     }
 
 
@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         Log::warning('Failed login attempt', ['email' => $request->input('email')]);
 
-        return back()->withErrors(['email' => __('auth.failed')]);
+        return back()->withErrors(['email' => __('Auth.failed')]);
 
 //        $request->validate([
 //            "email" => "required|email",
