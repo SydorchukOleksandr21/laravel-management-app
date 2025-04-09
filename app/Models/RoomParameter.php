@@ -16,6 +16,7 @@ class RoomParameter extends AbstractModel
     protected $fillable = [
         'name',
         'value_type',
+        'value',
     ];
 
     protected $casts = [

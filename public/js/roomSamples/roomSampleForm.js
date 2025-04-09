@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const saveButton = document.getElementById('saveButton');
     const nameInput = document.getElementById('name');
     const personCountInput = document.getElementById('person_count');
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 base64Image = e.target.result; // Зберігаємо зображення у Base64 форматі
                 imagePreview.src = base64Image;
                 imagePreview.classList.remove('hidden');
@@ -60,21 +60,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const name = element.querySelector('input[name*="room_parameters[][name]"]').value;
             const type = element.querySelector('select[name*="room_parameters[][type]"]').value;
 
-            // Get the correct value input based on visibility (not hidden)
-            let value = null;
-            const valueInputs = element.querySelectorAll('input[name*="room_parameters[][value]"]:not(.hidden)');
+            // Отримуємо правильне поле value (яке не приховане)
+            let valueInput = element.querySelector('input[name*="room_parameters[][value]"]:not([type="hidden"])');
 
-            valueInputs.forEach(valueInput => {
+            let value = null;
+            if (valueInput) {
                 if (valueInput.type === 'checkbox') {
                     value = valueInput.checked ? 1 : 0;
+                } else if (valueInput.type === 'number') {
+                    value = valueInput.value.trim() ? parseFloat(valueInput.value) : null;
                 } else {
-                    value = valueInput.value;
+                    value = valueInput.value.trim();
                 }
-            });
+            }
+
 
             // Only add parameter if name and value are filled
             if (name && value !== null) {
-                parameters.push({ name, type, value });
+                parameters.push({name, type, value});
             }
         });
 
@@ -82,28 +85,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Form submission
-    saveButton.addEventListener('click', function() {
+    saveButton.addEventListener('click', function () {
         // Create a JSON object
         const formData = {
             name: nameInput.value,
             person_count: personCountInput.value,
             square_area: squareAreaInput.value,
             room_parameters: collectParameters(),
-            image: base64Image // Додаємо Base64-зображення
+            image: base64Image // Add Base64 image
         };
 
         // Send the data as a JSON object in a POST request
-        fetch('/room-sample/create', {
+        fetch('/room-sample', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            body: JSON.stringify(formData) // Відправляємо JSON
+            body: JSON.stringify(formData) // Send JSON data
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Data successfully sent:', data);
+                console.log(data);
+                if (data.id) {
+                    window.location.href = `/room-sample/${data.id}`; // Redirect to the created RoomSample page
+                } else {
+                    console.error('Unexpected response:', data);
+                }
             })
             .catch(error => {
                 console.error('Error sending data:', error);

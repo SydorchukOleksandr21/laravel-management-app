@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->comment('Parameter name');
             $table->unsignedTinyInteger('value_type');
+            $table->string('value')->comment('Parameter value');
+
             $table->timestamps();
         });
     }

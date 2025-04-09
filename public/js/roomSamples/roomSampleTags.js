@@ -37,13 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
             booleanInput.classList.add("hidden");
 
             // Відображаємо потрібне поле
-            if (event.target.value === "string") {
+            if (event.target.value === "1") { // String
                 textInput.classList.remove("hidden");
-            } else if (event.target.value === "number") {
+            } else if (event.target.value === "0") { // Number
                 numberInput.classList.remove("hidden");
-            } else if (event.target.value === "boolean") {
+            } else if (event.target.value === "2") { // Boolean
                 booleanInput.classList.remove("hidden");
             }
+
         }
     });
 });
