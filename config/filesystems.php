@@ -77,4 +77,8 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    'paths' => [
+        'base' => 'files',
+        'roomSamples' => config('filesystems.paths.base') . '/roomSamples',
+    ],
 ];

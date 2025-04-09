@@ -77,40 +77,22 @@
                 <!-- Room Parameters Block (One Column Below) -->
                 <div class="mt-6">
                     <label class="block text-lg font-semibold text-gray-700">Room Parameters</label>
-                    <div id="tagsContainer" class="mt-2"></div>
+                    <div id="roomParametersContainer" class="mt-2"></div>
 
-                    <div class="flex items-center gap-4 mb-2">
-                        <input type="text"
-                               name="room_parameters[][name]"
-                               placeholder="Parameter Name"
-                               class="form-input w-full p-2 border rounded-md">
+                    <!-- Прихований шаблон для використання в JS -->
+                    <template id="roomParameterTemplate">
+                        @include('components.roomParameterTemplate')
+                    </template>
 
-                        <select name="room_parameters[][type]" class="form-select">
-                            <option value="string" class="form-option">String</option>
-                            <option value="number" class="form-option">Number</option>
-                            <option value="boolean" class="form-option">Boolean</option>
-                        </select>
-
-
-
-                        <input type="text" name="room_parameters[][value]"
-                               class="form-input w-full p-2 border rounded-md">
-
-                        <button type="button" class="btn btn-error rounded-md px-3 py-2">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-
-
-
-                    <button type="button" id="addTagButton" class="mt-2 px-4 py-2 border rounded-md bg-gray-200">+ Add
+                    <button type="button" id="addParameterButton" class="mt-2 px-4 py-2 border rounded-md bg-gray-200">+
+                        Add
                         Parameter
                     </button>
                 </div>
 
                 <!-- Save Button -->
                 <div class="col-span-2 mt-6">
-                    <button type="submit" id="saveButton" class="btn btn-primary w-full py-2 rounded-md" disabled>
+                    <button type="button" id="saveButton" class="btn btn-primary w-full py-2 rounded-md" disabled>
                         Save
                     </button>
                 </div>

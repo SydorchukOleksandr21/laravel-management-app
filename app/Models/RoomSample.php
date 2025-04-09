@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
+ * @property int id
  * @property string name
  * @property int person_count
  * @property int square_area
@@ -53,5 +54,15 @@ class RoomSample extends AbstractModel
     public function rooms(): BelongsToMany
     {
         return $this->belongsToMany(Room::class, 'room', 'room_sample_id', 'id');
+    }
+
+    public function getDirectoryPath(): string
+    {
+        return config('filesystems.paths.roomSamples') . "/$this->id";
+    }
+
+    public function getImagePath(): string
+    {
+        return $this->getDirectoryPath() . "/$this->image_path";
     }
 }

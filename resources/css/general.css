@@ -595,7 +595,8 @@ body {
 
 /* general.css */
 .form-select {
-    @apply block w-full p-2 text-sm leading-6 text-gray-900 bg-white border border-gray-300 rounded-md focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
+    border-radius: var(--radius-sm);
+    @apply block w-full p-2 text-sm leading-6 text-gray-900 bg-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
     height: calc(2.5rem + 2px); /* Matches the height of the input */
 }
 

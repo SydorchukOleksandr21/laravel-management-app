@@ -1,70 +1,49 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const tagsContainer = document.getElementById('tagsContainer');
-    const addTagButton = document.getElementById('addTagButton');
+document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("roomParametersContainer");
+    const addButton = document.getElementById("addParameterButton");
+    const template = document.getElementById("roomParameterTemplate").innerHTML;
 
-    function createTagRow() {
-        const row = document.createElement('div');
-        row.classList.add('flex', 'items-center', 'gap-4', 'mb-2');
+    // Додавання нового параметра
+    addButton.addEventListener("click", function () {
+        const newElement = document.createElement("div");
+        newElement.innerHTML = template;
+        container.appendChild(newElement.firstElementChild);
+    });
 
-        // Name Field
-        const nameInput = document.createElement('input');
-        nameInput.type = 'text';
-        nameInput.name = 'room_parameters[][name]';
-        nameInput.placeholder = 'Parameter Name';
-        nameInput.classList.add('form-input', 'border', 'rounded-md', 'p-2', 'w-1/3');
+    // Видалення параметра
+    container.addEventListener("click", function (event) {
+        if (event.target.closest(".remove-parameter")) {
+            event.target.closest(".room-parameter").remove();
+        }
+    });
 
-        // Type Dropdown
-        const typeSelect = document.createElement('select');
-        typeSelect.name = 'room_parameters[][type]';
-        typeSelect.classList.add('form-select', 'border', 'rounded-md', 'p-2', 'w-1/3');
+    // Обробка зміни типу параметра
+    container.addEventListener("change", function (event) {
+        if (event.target.classList.contains("parameter-type")) {
+            const parameterRow = event.target.closest(".room-parameter");
 
-        const options = ['String', 'Number', 'Boolean'];
-        options.forEach(option => {
-            const opt = document.createElement('option');
-            opt.value = option.toLowerCase();
-            opt.textContent = option;
-            typeSelect.appendChild(opt);
-        });
+            if (!parameterRow) return; // Перевірка, що блок існує
 
-        // Value Field (default to text input)
-        let valueInput = document.createElement('input');
-        valueInput.type = 'text';
-        valueInput.name = 'room_parameters[][value]';
-        valueInput.classList.add('form-input', 'border', 'rounded-md', 'p-2', 'w-1/3');
+            console.log("Changed type to:", event.target.value);
 
-        // Remove Button
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.textContent = '✖';
-        removeButton.classList.add('px-2', 'py-1', 'bg-red-500', 'text-white', 'rounded-md');
+            // Отримуємо всі варіанти полів значень
+            const textInput = parameterRow.querySelector(".parameter-text");
+            const numberInput = parameterRow.querySelector(".parameter-number");
+            const booleanInput = parameterRow.querySelector(".parameter-boolean");
 
-        removeButton.addEventListener('click', () => row.remove());
+            // Приховуємо всі варіанти
+            textInput.classList.add("hidden");
+            numberInput.classList.add("hidden");
+            booleanInput.classList.add("hidden");
 
-        // Change input type based on selection
-        typeSelect.addEventListener('change', function() {
-            if (this.value === 'string') {
-                valueInput.type = 'text';
-            } else if (this.value === 'number') {
-                valueInput.type = 'number';
-            } else if (this.value === 'boolean') {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.name = 'room_parameters[][value]';
-                checkbox.classList.add('w-5', 'h-5');
-                row.replaceChild(checkbox, valueInput);
-                valueInput = checkbox;
-            } else {
-                valueInput.type = 'text';
+            // Відображаємо потрібне поле
+            if (event.target.value === "string") {
+                textInput.classList.remove("hidden");
+            } else if (event.target.value === "number") {
+                numberInput.classList.remove("hidden");
+            } else if (event.target.value === "boolean") {
+                booleanInput.classList.remove("hidden");
             }
-        });
-
-        row.appendChild(nameInput);
-        row.appendChild(typeSelect);
-        row.appendChild(valueInput);
-        row.appendChild(removeButton);
-
-        tagsContainer.appendChild(row);
-    }
-
-    addTagButton.addEventListener('click', createTagRow);
+        }
+    });
 });
