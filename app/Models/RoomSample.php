@@ -56,11 +56,17 @@ class RoomSample extends AbstractModel
         return $this->belongsToMany(Room::class, 'room', 'room_sample_id', 'id');
     }
 
+    /**
+     * @return string
+     */
     public function getDirectoryPath(): string
     {
         return config('filesystems.paths.roomSamples');
     }
 
+    /**
+     * @return string
+     */
     public function getImagePath(): string
     {
         return $this->getDirectoryPath() . "/$this->image_path";

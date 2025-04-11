@@ -9,8 +9,8 @@
                     <p class="text-sm text-muted text-center mt-1">Create a new account to get started.</p>
                 </div>
 
-                <div class="card-body">
-                    <form action="{{ route('Auth.createUser') }}" method="POST" class="form-container">
+                <div class="">
+                    <form action="{{ route('auth.createUser') }}" method="POST" class="p-4">
                         @csrf
 
                         <div class="form-group">
@@ -48,7 +48,7 @@
                 <div class="card-footer text-center">
                     <p class="text-sm">
                         Already have an account?
-                        <a href="{{ route('Auth.login') }}" class="text-primary">
+                        <a href="{{ route('auth.login') }}" class="text-primary">
                             Login
                         </a>
                     </p>

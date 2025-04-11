@@ -78,7 +78,8 @@ return [
     ],
 
     'paths' => [
+        'prefix' => 'app/private',
         'base' => 'files',
-        'roomSamples' => config('filesystems.paths.base') . '/roomSamples',
+        'roomSamples' => 'files/roomSamples',
     ],
 ];

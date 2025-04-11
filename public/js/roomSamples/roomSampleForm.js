@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const parameterElements = roomParametersContainer.querySelectorAll('.room-parameter');
 
         parameterElements.forEach(element => {
+
             const name = element.querySelector('input[name*="room_parameters[][name]"]').value;
             const type = element.querySelector('select[name*="room_parameters[][type]"]').value;
 
@@ -73,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     value = valueInput.value.trim();
                 }
             }
-
 
             // Only add parameter if name and value are filled
             if (name && value !== null) {
@@ -95,9 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
             image: base64Image // Add Base64 image
         };
 
+        const url = saveButton.getAttribute("data-url");
+        const method = saveButton.getAttribute("data-method");
+
         // Send the data as a JSON object in a POST request
-        fetch('/room-sample', {
-            method: 'POST',
+        fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')

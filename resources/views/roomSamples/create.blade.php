@@ -80,19 +80,18 @@
                     <div id="roomParametersContainer" class="mt-2"></div>
 
                     <!-- Прихований шаблон для використання в JS -->
-                    <template id="roomParameterTemplate">
+                    <div id="roomParameterTemplate" class="hidden">
                         @include('components.roomParameterTemplate')
-                    </template>
+                    </div>
 
                     <button type="button" id="addParameterButton" class="mt-2 px-4 py-2 border rounded-md bg-gray-200">+
-                        Add
-                        Parameter
+                        Add Parameter
                     </button>
                 </div>
 
                 <!-- Save Button -->
                 <div class="col-span-2 mt-6">
-                    <button type="button" id="saveButton" class="btn btn-primary w-full py-2 rounded-md" disabled>
+                    <button type="button" id="saveButton" class="btn btn-primary w-full py-2 rounded-md" disabled data-url="/room-sample/store">
                         Save
                     </button>
                 </div>
@@ -103,4 +102,5 @@
     <!-- JavaScript -->
     <script src="{{ asset('js/roomSamples/roomSampleForm.js') }}"></script>
     <script src="{{ asset('js/roomSamples/roomSampleTags.js') }}"></script>
+
 @endsection

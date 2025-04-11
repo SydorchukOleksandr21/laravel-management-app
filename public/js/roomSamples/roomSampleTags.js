@@ -1,7 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("roomParametersContainer");
     const addButton = document.getElementById("addParameterButton");
-    const template = document.getElementById("roomParameterTemplate").innerHTML;
+    let templateElement, template;
+
+    //activate text select by default
+    findTemplate();
+    const textInput = templateElement.querySelector(".parameter-text");
+    textInput.classList.remove("hidden");
+    findTemplate();
+
+
+    function findTemplate(){
+        templateElement = document.getElementById("roomParameterTemplate");
+        template = templateElement.innerHTML;
+    }
 
     // Додавання нового параметра
     addButton.addEventListener("click", function () {
@@ -31,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const numberInput = parameterRow.querySelector(".parameter-number");
             const booleanInput = parameterRow.querySelector(".parameter-boolean");
 
+            console.log(event.target.value)
             // Приховуємо всі варіанти
             textInput.classList.add("hidden");
             numberInput.classList.add("hidden");

@@ -6,8 +6,8 @@
     /* Color Palette */
     --color-primary: #4F46E5; /* Soft indigo */
     --color-primary-hover: #4338CA; /* Darker indigo for hover states */
-    --color-secondary: #22C55E; /* Light emerald */
-    --color-secondary-hover: #16A34A; /* Darker emerald for hover states */
+    --color-secondary: #3B82F6; /* Soft blue */
+    --color-secondary-hover: #2563EB; /* Darker blue for hover states */
     --color-background: #F8FAFC; /* Soft white-blue */
     --color-text: #334155; /* Muted dark blue-gray */
     --color-text-light: #64748B; /* Lighter text for secondary content */
@@ -16,6 +16,7 @@
     --color-border: #CBD5E1; /* Light slate-gray */
     --color-accent: #EAB308; /* Warm golden yellow */
     --color-error: #EF4444; /* Soft red for errors */
+    --color-error-hover: #DC2626; /* Darker red for hover states */
     --color-success: #10B981; /* Teal green for success */
     --color-warning: #F59E0B; /* Soft amber for warnings */
     --color-info: #3B82F6; /* Calm blue for information */
@@ -135,6 +136,7 @@ body {
 
 /* Buttons */
 .btn {
+    @apply rounded-md;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -185,7 +187,7 @@ body {
 }
 
 .btn-error:hover {
-    background-color: var(--color-error);
+    background-color: var(--color-error-hover);
 }
 
 .btn-error:disabled {

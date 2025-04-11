@@ -21,8 +21,8 @@ Route::get('/dashboard', function () {
 //Route::get("signin", fn() => to_route("Auth.create"));
 //Route::get("signout", fn() => to_route("Auth.delete"));
 
-Route::prefix('Auth')
-    ->name('Auth.')
+Route::prefix('auth')
+    ->name('auth.')
     ->controller(AuthController::class)
     ->group(function () {
         Route::get('login', 'login')->name('login');
@@ -35,5 +35,9 @@ Route::prefix('Auth')
     });
 
 Route::resource('booking', BookingController::class);
+
 Route::resource('guest', GuestController::class);
+
 Route::resource('room-sample', RoomSampleController::class);
+Route::get('/room-sample/{roomSample}/image', [RoomSampleController::class, 'showImage'])
+    ->name('room-sample.image');

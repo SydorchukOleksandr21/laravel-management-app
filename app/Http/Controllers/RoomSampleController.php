@@ -7,6 +7,7 @@ use App\Models\RoomSample;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RoomSampleController extends Controller
 {
@@ -41,6 +42,18 @@ class RoomSampleController extends Controller
     {
         return view('roomSamples.create');
     }
+
+    /**
+     * @param RoomSample $roomSample
+     * @return BinaryFileResponse
+     */
+    public function showImage(RoomSample $roomSample): BinaryFileResponse
+    {
+        $filePath = $roomSample->getImagePath();
+
+        return response()->file(storage_path($filePath));
+    }
+
 
     public function show(int $id)
     {
@@ -94,11 +107,15 @@ class RoomSampleController extends Controller
      */
     private function saveRoomSample(RoomSample $roomSample, Request $request, bool $isNew): RoomSample
     {
+        //dd(Storage::exists($roomSample->getImagePath()));
+
         $imageName = $roomSample->image_path;
 
         if ($request->filled('image')) {
             if (!$isNew && $imageName) {
-                Storage::delete($roomSample->getImagePath());
+                if(Storage::exists($roomSample->getImagePath())) {
+                    Storage::delete($roomSample->getImagePath());
+                }
             }
 
             $imageName = $this->storeBase64Image($roomSample, $request->input('image'));
@@ -121,7 +138,7 @@ class RoomSampleController extends Controller
             $parameters = array_map(function ($param) {
                 return [
                     'name' => $param['name'] ?? '',
-                    'value_type' => ValueType::from(intval($param['type'])) ?? ValueType::String,
+                    'value_type' => ValueType::from(intval($param['type'])) ?? ValueType::String->value,
                     'value' => $param['value'] ?? '',
                 ];
 
@@ -164,5 +181,17 @@ class RoomSampleController extends Controller
         } catch (\Exception $e) {
             return null;
         }
+    }
+
+    public function edit(RoomSample $roomSample)
+    {
+        return view('roomSamples.edit', compact('roomSample'));
+    }
+
+    public function destroy(RoomSample $roomSample): JsonResponse
+    {
+        $roomSample->delete();
+
+        return response()->json([], 204);
     }
 }
