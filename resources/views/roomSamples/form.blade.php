@@ -71,7 +71,7 @@
             <div class="mt-6">
                 <label class="block text-lg font-semibold text-gray-700">Room Parameters</label>
                 <div id="roomParametersContainer" class="mt-2">
-                    @if($roomSample->roomParameters)
+                    @if($roomSample && $roomSample->roomParameters)
                         @foreach($roomSample->roomParameters as $param)
                             @include('components.roomParameterTemplate', ['parameter' => $param])
                         @endforeach
