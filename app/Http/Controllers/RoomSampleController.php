@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\ValueType;
 use App\Models\RoomSample;
+use App\Services\Core\ImageModelService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -49,17 +51,21 @@ class RoomSampleController extends Controller
      */
     public function showImage(RoomSample $roomSample): BinaryFileResponse
     {
-        $filePath = $roomSample->getImagePath();
+        $filePath = (new ImageModelService($roomSample))->getModelImageViewPath("image_path");
 
         return response()->file(storage_path($filePath));
     }
-
 
     public function show(int $id)
     {
         $roomSample = RoomSample::findOrFail($id);
 
         return view('roomSamples.show', compact('roomSample'));
+    }
+
+    public function edit(RoomSample $roomSample)
+    {
+        return view('roomSamples.edit', compact('roomSample'));
     }
 
 
@@ -86,6 +92,7 @@ class RoomSampleController extends Controller
      * @param Request $request
      * @param RoomSample $roomSample
      * @return JsonResponse
+     * @throws Exception
      */
     public function update(Request $request, RoomSample $roomSample): JsonResponse
     {
@@ -97,6 +104,7 @@ class RoomSampleController extends Controller
         ], 200);
     }
 
+
     /**
      * Handle RoomSample creation or update.
      *
@@ -104,21 +112,23 @@ class RoomSampleController extends Controller
      * @param Request $request
      * @param bool $isNew
      * @return RoomSample
+     * @throws Exception
      */
     private function saveRoomSample(RoomSample $roomSample, Request $request, bool $isNew): RoomSample
     {
-        //dd(Storage::exists($roomSample->getImagePath()));
-
         $imageName = $roomSample->image_path;
 
         if ($request->filled('image')) {
             if (!$isNew && $imageName) {
-                if(Storage::exists($roomSample->getImagePath())) {
+                if (Storage::exists($roomSample->getImagePath())) {
                     Storage::delete($roomSample->getImagePath());
                 }
             }
 
-            $imageName = $this->storeBase64Image($roomSample, $request->input('image'));
+            $imageModeService = new ImageModelService($roomSample);
+            $base64Image = $request->input('image');
+            $imageName = $imageModeService->storeBase64Image("image_path", $base64Image);
+            //$imageName = $this->storeBase64Image($roomSample, $request->input('image'));
         }
 
         // Convert values properly
@@ -126,6 +136,7 @@ class RoomSampleController extends Controller
             'name' => $request->input('name', ''),
             'person_count' => abs(intval($request->input('person_count', 0))),
             'square_area' => abs(floatval($request->input('square_area', 0))),
+            'description' => $request->input('description', ''),
             'image_path' => $imageName,
         ]);
 
@@ -151,45 +162,15 @@ class RoomSampleController extends Controller
     }
 
     /**
-     * Decode and store a base64-encoded image.
-     *
      * @param RoomSample $roomSample
-     * @param string $base64Image
-     * @return string|null
+     * @return JsonResponse
      */
-    private function storeBase64Image(RoomSample $roomSample, string $base64Image): ?string
-    {
-        try {
-            // Extract the file extension
-            preg_match('/^data:image\/(\w+);base64,/', $base64Image, $matches);
-
-            if (!isset($matches[1])) {
-                return null;
-            }
-
-            $extension = $matches[1];
-            $imageData = substr($base64Image, strpos($base64Image, ',') + 1);
-            $imageData = base64_decode($imageData);
-
-            // Generate unique filename
-            $fileName = uniqid('room_', true) . '.' . $extension;
-
-            // Store the image
-            Storage::put($roomSample->getDirectoryPath() . "/$fileName", $imageData);
-
-            return $fileName;
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    public function edit(RoomSample $roomSample)
-    {
-        return view('roomSamples.edit', compact('roomSample'));
-    }
-
     public function destroy(RoomSample $roomSample): JsonResponse
     {
+        if (Storage::exists($roomSample->getImagePath())) {
+            Storage::delete($roomSample->getImagePath());
+        }
+
         $roomSample->delete();
 
         return response()->json([], 204);

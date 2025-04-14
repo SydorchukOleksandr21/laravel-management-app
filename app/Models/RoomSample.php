@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Interfaces\ImageModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string description
  * @property string image_path
  */
-class RoomSample extends AbstractModel
+class RoomSample extends AbstractModel implements ImageModelInterface
 {
     use HasFactory;
 
@@ -70,5 +71,17 @@ class RoomSample extends AbstractModel
     public function getImagePath(): string
     {
         return $this->getDirectoryPath() . "/$this->image_path";
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getImageProperties(): array
+    {
+        return [
+            "image_path" => [
+                "name" => uniqid('room_', true),
+            ]
+        ];
     }
 }

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const saveButton = document.getElementById('saveButton');
     const nameInput = document.getElementById('name');
+    const descriptionInput = document.getElementById('description');
     const personCountInput = document.getElementById('person_count');
     const squareAreaInput = document.getElementById('square_area');
     const imageInput = document.getElementById('image');
@@ -62,9 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const type = element.querySelector('select[name*="room_parameters[][type]"]').value;
 
             // Отримуємо правильне поле value (яке не приховане)
-            let valueInput = element.querySelector('input[name*="room_parameters[][value]"]:not([type="hidden"])');
-
+            let valueInputs = element.querySelectorAll('input[name*="room_parameters[][value]"]');
+            let valueInput = Array.from(valueInputs).find(input => !input.classList.contains('hidden'));
             let value = null;
+
             if (valueInput) {
                 if (valueInput.type === 'checkbox') {
                     value = valueInput.checked ? 1 : 0;
@@ -91,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             name: nameInput.value,
             person_count: personCountInput.value,
             square_area: squareAreaInput.value,
+            description: descriptionInput.value,
             room_parameters: collectParameters(),
             image: base64Image // Add Base64 image
         };

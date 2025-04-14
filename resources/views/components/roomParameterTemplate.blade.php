@@ -1,8 +1,12 @@
-@if(!isset($parameter))
-        <?php
+
+@php
+    if(!isset($parameter)){
         $parameter = null;
-        ?>
-@endif
+    }
+
+    $parameterValue = $parameter->value ?? '';
+    $parameterType = $parameter->value_type ?? null;
+@endphp
 <table class="w-full border-separate room-parameters-table">
     <tbody>
     <tr class="room-parameter">
@@ -16,19 +20,19 @@
             <select name="room_parameters[][type]" class="form-select parameter-type w-full p-3">
                 <option
                     value="1"
-                    @selected(($parameter->value_type ?? null) == \App\Enums\ValueType::String)
+                    @selected($parameterType == \App\Enums\ValueType::String)
                 >
                     String
                 </option>
                 <option
                     value="0"
-                    @selected(($parameter->value_type ?? null) == \App\Enums\ValueType::Number)
+                    @selected($parameterType == \App\Enums\ValueType::Number)
                 >
                     Number
                 </option>
                 <option
                     value="2"
-                    @selected(($parameter->value_type ?? null) == \App\Enums\ValueType::Boolean)
+                    @selected($parameterType == \App\Enums\ValueType::Boolean)
 
                 >
                     Boolean
@@ -65,10 +69,10 @@
         <td class="p-3 w-1/3">
             <!-- Поле для тексту -->
             <input type="text" name="room_parameters[][value]"
-                   value="{{ $parameter->value ?? '' }}"
+                   value="{{ $parameterValue }}"
 
                    class="form-input w-full p-3 border rounded-sm parameter-value parameter-text
-                   {{ (($parameter->value_type ?? null) == \App\Enums\ValueType::String) ? '' : 'hidden' }}
+                   {{ ($parameterType == \App\Enums\ValueType::String) ? '' : 'hidden' }}
                    "
                    placeholder="Value"
             >
@@ -76,20 +80,20 @@
             <!-- Поле для чисел -->
             <input type="number" name="room_parameters[][value]"
                    class="form-input w-full p-3 border rounded-sm parameter-value parameter-number
-                    {{ (($parameter->value_type ?? null) == \App\Enums\ValueType::Number) ? '' : 'hidden' }}
+                    {{ ($parameterType == \App\Enums\ValueType::Number) ? '' : 'hidden' }}
                    "
                    placeholder="Value"
                    step="any"
                    title="Введіть числове значення"
-                   value="{{ $parameter->value ?? '' }}"
+                   value="{{ $parameterValue }}"
                    oninput="this.value = this.value.replace(/[^0-9.-]/g, '')"
             >
             <!-- Чекбокс -->
             <div class="parameter-value parameter-boolean flex justify-center
-               {{ (($parameter->value_type ?? null) == \App\Enums\ValueType::Boolean) ? '' : 'hidden' }}
+               {{ ($parameterType == \App\Enums\ValueType::Boolean) ? '' : 'hidden' }}
             ">
                 <input type="checkbox" name="room_parameters[][value]"
-                       {{ (($parameter->value ?? '') == 1) ? 'checked' : '' }}
+                       {{ ($parameterValue == 1) ? 'checked' : '' }}
                        class="w-6 h-6"
                 >
 

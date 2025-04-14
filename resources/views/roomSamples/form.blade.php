@@ -1,8 +1,15 @@
 <div class="flex flex-col items-center justify-center min-h-screen bg-warm-gray-50 px-4">
+
     <!-- Form Container -->
     <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
-        <div class="text-center mb-4">
-            <h2 class="text-2xl font-semibold">{{ isset($roomSample) ? 'Edit Room Sample' : 'Create Room Sample' }}</h2>
+        <div class="relative mb-4">
+{{--            <a href="{{ route('room-sample.show', $roomSample) }}"--}}
+{{--               class="btn btn-secondary py-2 absolute left-0 top-1/2 -translate-y-1/2">--}}
+{{--                Back--}}
+{{--            </a>--}}
+            <h2 class="text-2xl font-semibold text-center">
+                {{ isset($roomSample) ? 'Edit Room Sample' : 'Create Room Sample' }}
+            </h2>
         </div>
 
         <form id="roomSampleForm" class="grid grid-cols-2 gap-6" autocomplete="off">
@@ -45,12 +52,16 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Room Image</label>
 
                 <!-- Image Box -->
+                @php
+                    $hasImage = (bool)isset($roomSample) ?? $roomSample->image_path
+                @endphp
                 <div
-                    class="relative w-full h-72 border-2 border-gray-300 rounded-md flex items-center justify-center overflow-hidden">
+                        class="relative w-full h-72 border-2 border-gray-300 rounded-md flex items-center justify-center overflow-hidden">
                     <img id="imagePreview"
-                         src="{{ isset($roomSample->image_path) ? route('room-sample.image', $roomSample) : '' }}"
-                         alt="Room Image" class="w-full h-full object-cover hidden">
-                    <span id="placeholderText" class="text-gray-400">No image selected</span>
+                         src="{{ isset($roomSample) ? route('room-sample.image', $roomSample) : "" }}"
+                         alt="Room Image" class="w-full h-full object-cover {{$hasImage ? "" : "hidden"}}">
+                    <span id="placeholderText"
+                          class="text-gray-400 {{$hasImage ? "hidden" : ""}}">No image selected</span>
                 </div>
 
                 <!-- Buttons in one row -->
@@ -91,10 +102,25 @@
 
             <!-- Save Button -->
             <div class="col-span-2 mt-6">
-                <button type="button" id="saveButton" class="btn btn-primary w-full py-2 rounded-md" disabled
-                        data-url="{{$buttonUrl}}" data-method="{{$buttonMethod}}">
-                    {{$buttonLabel}}
-                </button>
+{{--                <button type="button" id="saveButton" class="btn btn-primary w-full py-2 rounded-md" disabled--}}
+{{--                        data-url="{{$buttonUrl}}" data-method="{{$buttonMethod}}">--}}
+{{--                    {{$buttonLabel}}--}}
+{{--                </button>--}}
+                <div class="flex items-center gap-4 mt-6">
+                    <!-- Back Button -->
+                    <a href="{{ route('room-sample.show', $roomSample) }}"
+                       class="btn btn-secondary py-2 px-4 flex-shrink-0">
+                        Back
+                    </a>
+
+                    <!-- Save Button -->
+                    <button type="button" id="saveButton"
+                            class="btn btn-primary py-2 px-6 rounded-md w-full"
+                            data-url="{{$buttonUrl}}" data-method="{{$buttonMethod}}" disabled>
+                        {{$buttonLabel}}
+                    </button>
+                </div>
+
             </div>
         </form>
     </div>
