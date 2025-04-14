@@ -77,4 +77,9 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    'paths' => [
+        'prefix' => 'app/private',
+        'base' => 'files',
+        'roomSamples' => 'files/roomSamples',
+    ],
 ];

@@ -1,20 +1,22 @@
 @tailwind utilities;
-@tailwind base;
-@tailwind components;
+/*@tailwind base;*/
+/*@tailwind components;*/
 
 :root {
     /* Color Palette */
     --color-primary: #4F46E5; /* Soft indigo */
     --color-primary-hover: #4338CA; /* Darker indigo for hover states */
-    --color-secondary: #22C55E; /* Light emerald */
-    --color-secondary-hover: #16A34A; /* Darker emerald for hover states */
+    --color-secondary: #3B82F6; /* Soft blue */
+    --color-secondary-hover: #2563EB; /* Darker blue for hover states */
     --color-background: #F8FAFC; /* Soft white-blue */
     --color-text: #334155; /* Muted dark blue-gray */
     --color-text-light: #64748B; /* Lighter text for secondary content */
+    --color-button-disabled: #64748B; /* Lighter text for secondary content */
     --color-text-white: #FFFFFF; /* White text */
     --color-border: #CBD5E1; /* Light slate-gray */
     --color-accent: #EAB308; /* Warm golden yellow */
     --color-error: #EF4444; /* Soft red for errors */
+    --color-error-hover: #DC2626; /* Darker red for hover states */
     --color-success: #10B981; /* Teal green for success */
     --color-warning: #F59E0B; /* Soft amber for warnings */
     --color-info: #3B82F6; /* Calm blue for information */
@@ -50,6 +52,12 @@ body {
     color: var(--color-text);
     margin: 0;
     padding: 0;
+}
+
+.phone-number{
+    div.iti{
+        width: 100%;
+    }
 }
 
 /* Form Elements */
@@ -128,6 +136,7 @@ body {
 
 /* Buttons */
 .btn {
+    @apply rounded-md;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -150,6 +159,11 @@ body {
     background-color: var(--color-primary-hover);
 }
 
+.btn-primary:disabled {
+    background-color: var(--color-button-disabled);
+    color: var(--color-text-white);
+}
+
 .btn-secondary {
     background-color: var(--color-secondary);
     color: var(--color-text-white);
@@ -166,6 +180,20 @@ body {
     border: 1px solid transparent;
 }
 
+.btn-error {
+    background-color: var(--color-error);
+    color: var(--color-text-white);
+    border: 1px solid transparent;
+}
+
+.btn-error:hover {
+    background-color: var(--color-error-hover);
+}
+
+.btn-error:disabled {
+    background-color: var(--color-error);
+    color: var(--color-text-white);
+}
 
 .btn-outline {
     background-color: transparent;
@@ -180,6 +208,10 @@ body {
 .btn-block {
     display: flex;
     width: 100%;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Card */
@@ -559,5 +591,33 @@ body {
 
 .stat-change.negative {
     color: var(--color-error);
+}
+
+
+
+/* general.css */
+.form-select {
+    border-radius: var(--radius-sm);
+    @apply block w-full p-2 text-sm leading-6 text-gray-900 bg-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200;
+    height: calc(2.5rem + 2px); /* Matches the height of the input */
+}
+
+.form-option {
+    @apply text-gray-900; /* Apply text color */
+}
+
+/* Option hover and focus effects (optional) */
+.form-select option:hover {
+    @apply bg-gray-100;
+}
+.form-select option:focus {
+    @apply bg-indigo-200;
+}
+
+
+.form-select:focus {
+    border-color: #6366f1; /* focus:border-indigo-500 */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); /* focus:ring-2 focus:ring-indigo-200 */
 }
 
