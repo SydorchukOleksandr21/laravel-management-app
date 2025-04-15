@@ -1,8 +1,4 @@
-@extends('app')
-
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
+@extends('layouts.admin')
 
 @section('content')
     {{--    <div class="flex flex-col items-center justify-center min-h-screen bg-warm-gray-50 px-4">--}}
@@ -105,7 +101,7 @@
 
     <x-item-show-card>
         <x-slot name="title">
-            "Room Sample Details"
+            Room Sample Details
         </x-slot>
 
         <x-slot name="urlEdit">

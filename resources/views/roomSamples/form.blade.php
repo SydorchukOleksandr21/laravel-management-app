@@ -108,7 +108,7 @@
 {{--                </button>--}}
                 <div class="flex items-center gap-4 mt-6">
                     <!-- Back Button -->
-                    <a href="{{ route('room-sample.show', $roomSample) }}"
+                    <a href="{{ url()->previous() }}"
                        class="btn btn-secondary py-2 px-4 flex-shrink-0">
                         Back
                     </a>

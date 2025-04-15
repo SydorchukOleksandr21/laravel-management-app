@@ -1,0 +1,11 @@
+.cuticon {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke: currentColor;
+    fill: none;
+}
+
+.cuticon-use {
+    display: inline-block;
+    vertical-align: middle;
+}

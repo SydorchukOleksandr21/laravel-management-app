@@ -18,7 +18,15 @@ class RoomSampleController extends Controller
      */
     public function index()
     {
-        //
+        $items = RoomSample::paginate(10); // або будь-яка інша модель
+        return view('roomSamples.index',
+        [
+            'items' => $items,
+            'modelName' => 'RoomSample',
+            'viewUrl' => null,
+            'editUrl' => null,
+            'deleteUrl' => null,
+        ]);
     }
 
     /**

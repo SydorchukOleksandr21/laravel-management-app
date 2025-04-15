@@ -41,3 +41,7 @@ Route::resource('guest', GuestController::class);
 Route::resource('room-sample', RoomSampleController::class);
 Route::get('/room-sample/{roomSample}/image', [RoomSampleController::class, 'showImage'])
     ->name('room-sample.image');
+
+Route::get('/image/{imageModel}/{modelId}/{property}', [RoomSampleController::class, 'show'])
+    ->name('image.show');
+
