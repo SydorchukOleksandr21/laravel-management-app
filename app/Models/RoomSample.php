@@ -32,6 +32,7 @@ class RoomSample extends AbstractModel implements ImageModelInterface
         'person_count',
         'square_area',
         'description',
+        'price',
         'image_path',
     ];
 
@@ -86,22 +87,9 @@ class RoomSample extends AbstractModel implements ImageModelInterface
         ];
     }
 
-//    /**
-//     * Return human-friendly attribute labels.
-//     *
-//     * @return array
-//     */
-//    public function attributeLabels(): array
-//    {
-//        return [
-//            'name' => 'Name',
-//            'person_count' => 'Person Count',
-//            'square_area' => 'Square Area',
-//            'image_path' => 'Image',
-//            // інші поля, якщо потрібно
-//        ];
-//    }
-
+    /**
+     * @return array[]
+     */
     public function attributeLabels(): array
     {
         return [
@@ -121,7 +109,10 @@ class RoomSample extends AbstractModel implements ImageModelInterface
                 'name' => 'Image',
                 'type' => GridValueType::Image
             ],
-            // інші поля, якщо потрібно
+            'price' => [
+                'name' => 'Price',
+                'type' => GridValueType::Currency
+            ],
         ];
     }
 }

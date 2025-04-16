@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\base\Controller;
 use App\Http\Requests\Guest\GuestRequest;
 use App\Models\Guest;
 use App\Services\Guest\GuestService;

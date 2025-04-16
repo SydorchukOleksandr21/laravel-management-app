@@ -20,7 +20,6 @@ class Room extends AbstractModel
     protected $fillable = [
         'floor',
         'number',
-        'price',
         'notes'
     ];
 }

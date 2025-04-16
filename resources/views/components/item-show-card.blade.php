@@ -13,7 +13,7 @@
         <div class="mt-8 flex justify-between">
             <a href="{{$urlEdit}}"
                class="btn btn-secondary py-2">Edit</a>
-            <button onclick="openModal('{{ $urlDelete }}')"
+            <button onclick="openModal('{{ $urlDelete, $itemId }}')"
                     class="btn btn-error py-2">
                 Delete
             </button>

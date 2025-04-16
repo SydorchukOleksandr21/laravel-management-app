@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('sidebar')
-    @include('components.sidebar')
+    @include('layouts.sidebar')
 @endsection
 
 @section('content')

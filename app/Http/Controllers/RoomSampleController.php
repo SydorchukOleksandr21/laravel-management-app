@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ValueType;
+use App\Http\Controllers\base\Controller;
 use App\Models\RoomSample;
 use App\Services\Core\ImageModelService;
+use App\Services\Core\ModelSearch;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,20 +16,18 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class RoomSampleController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @param Request $request
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = RoomSample::paginate(10); // або будь-яка інша модель
-        return view('roomSamples.index',
-        [
+        $items = (new ModelSearch(RoomSample::class))->search($request);
+
+        return view('roomSamples.index', [
             'items' => $items,
-            'modelName' => 'RoomSample',
-            'viewUrl' => null,
-            'editUrl' => null,
-            'deleteUrl' => null,
+            'className' => RoomSample::class,
         ]);
     }
+
 
     /**
      * @param Request $request
@@ -146,6 +146,7 @@ class RoomSampleController extends Controller
             'square_area' => abs(floatval($request->input('square_area', 0))),
             'description' => $request->input('description', ''),
             'image_path' => $imageName,
+            'price' => floatval($request->input('price', 0)),
         ]);
 
         $roomSample->save();
@@ -171,9 +172,9 @@ class RoomSampleController extends Controller
 
     /**
      * @param RoomSample $roomSample
-     * @return JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(RoomSample $roomSample): JsonResponse
+    public function destroy(RoomSample $roomSample): \Illuminate\Http\RedirectResponse
     {
         if (Storage::exists($roomSample->getImagePath())) {
             Storage::delete($roomSample->getImagePath());
@@ -181,6 +182,6 @@ class RoomSampleController extends Controller
 
         $roomSample->delete();
 
-        return response()->json([], 204);
+        return response()->redirectToRoute("room-sample.index");
     }
 }

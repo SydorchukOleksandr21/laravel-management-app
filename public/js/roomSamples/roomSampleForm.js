@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const descriptionInput = document.getElementById('description');
     const personCountInput = document.getElementById('person_count');
     const squareAreaInput = document.getElementById('square_area');
+    const priceInput = document.getElementById('price');
     const imageInput = document.getElementById('image');
     const uploadButton = document.getElementById('uploadButton');
     const removeButton = document.getElementById('removeButton');
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             name: nameInput.value,
             person_count: personCountInput.value,
             square_area: squareAreaInput.value,
+            price: priceInput.value,
             description: descriptionInput.value,
             room_parameters: collectParameters(),
             image: base64Image // Add Base64 image
