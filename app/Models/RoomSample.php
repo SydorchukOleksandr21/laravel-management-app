@@ -94,23 +94,23 @@ class RoomSample extends AbstractModel implements ImageModelInterface
     {
         return [
             'name' => [
-                'name' => 'Name',
+                'name' => 'property.name',
                 'type' => GridValueType::String
             ],
             'person_count' => [
-                'name' => 'Person Count',
+                'name' => 'property.person_count',
                 'type' => GridValueType::String
             ],
             'square_area' => [
-                'name' => 'Square Area',
+                'name' => 'property.square_area',
                 'type' => GridValueType::String,
             ],
             'image_path' => [
-                'name' => 'Image',
+                'name' => 'property.image_path',
                 'type' => GridValueType::Image
             ],
             'price' => [
-                'name' => 'Price',
+                'name' => 'property.price',
                 'type' => GridValueType::Currency
             ],
         ];

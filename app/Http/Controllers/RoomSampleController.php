@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ValueType;
 use App\Http\Controllers\base\Controller;
+use App\Http\Controllers\base\ResourceController;
 use App\Models\RoomSample;
 use App\Services\Core\ImageModelService;
 use App\Services\Core\ModelSearch;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class RoomSampleController extends Controller
+class RoomSampleController extends ResourceController
 {
     /**
      * @param Request $request
@@ -28,40 +29,20 @@ class RoomSampleController extends Controller
         ]);
     }
 
-
     /**
      * @param Request $request
      * @return JsonResponse
      */
     public function list(Request $request): JsonResponse
     {
-        $query = RoomSample::query();
+        $items = (new ModelSearch(RoomSample::class))->search($request);
 
-        // Apply search filter if name parameter is provided
-        if ($request->has('name')) {
-            $query->where('name', 'like', '%' . $request->input('name') . '%');
-        }
-
-        // Paginate the results
-        $roomTemplates = $query->paginate(10);
-
-        return response()->json($roomTemplates);
+        return response()->json($items);
     }
 
     public function create(Request $request)
     {
         return view('roomSamples.create');
-    }
-
-    /**
-     * @param RoomSample $roomSample
-     * @return BinaryFileResponse
-     */
-    public function showImage(RoomSample $roomSample): BinaryFileResponse
-    {
-        $filePath = (new ImageModelService($roomSample))->getModelImageViewPath("image_path");
-
-        return response()->file(storage_path($filePath));
     }
 
     public function show(int $id)
@@ -82,6 +63,7 @@ class RoomSampleController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws Exception
      */
     public function store(Request $request): JsonResponse
     {
@@ -133,21 +115,24 @@ class RoomSampleController extends Controller
                 }
             }
 
-            $imageModeService = new ImageModelService($roomSample);
             $base64Image = $request->input('image');
+            $imageModeService = new ImageModelService($roomSample);
             $imageName = $imageModeService->storeBase64Image("image_path", $base64Image);
-            //$imageName = $this->storeBase64Image($roomSample, $request->input('image'));
+
+            $roomSample->fill([
+                'image_path' => $imageName,
+            ]);
         }
 
-        // Convert values properly
-        $roomSample->fill([
-            'name' => $request->input('name', ''),
-            'person_count' => abs(intval($request->input('person_count', 0))),
-            'square_area' => abs(floatval($request->input('square_area', 0))),
-            'description' => $request->input('description', ''),
-            'image_path' => $imageName,
-            'price' => floatval($request->input('price', 0)),
-        ]);
+        $this->save($roomSample, $request, [
+            'name' => 'required|string|max:255',
+            'person_count' => 'required|integer|min:1',
+            'square_area' => 'required|numeric|min:0',
+            'description' => 'string',
+            'image' => 'string',
+            'price' => 'nullable|numeric',
+        ], false);
+
 
         $roomSample->save();
 

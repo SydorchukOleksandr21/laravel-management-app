@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
     uploadButton.addEventListener('click', () => imageInput.click());
     imageInput.addEventListener('change', handleImageUpload);
     removeButton.addEventListener('click', removeImage);
-
-    nameInput.addEventListener('input', toggleSaveButton);
-    personCountInput.addEventListener('input', toggleSaveButton);
-    squareAreaInput.addEventListener('input', toggleSaveButton);
-
-    toggleSaveButton();
+    //
+    // nameInput.addEventListener('input', toggleSaveButton);
+    // personCountInput.addEventListener('input', toggleSaveButton);
+    // squareAreaInput.addEventListener('input', toggleSaveButton);
+    //
+    // toggleSaveButton();
 
     // Function to collect parameters data as an array of objects
     function collectParameters() {

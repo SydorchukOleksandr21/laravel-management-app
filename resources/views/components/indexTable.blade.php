@@ -59,7 +59,7 @@
                     <tr>
                         @foreach ($modelInstance->getFillable() as $field)
                             <th class="px-6 py-2 font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                                {{ $labels[$field]['name'] ?? ucfirst(str_replace('_', ' ', $field)) }}                            </th>
+                                {{ __($labels[$field]['name'] ?? ucfirst(str_replace('_', ' ', $field))) }}                            </th>
                         @endforeach
                         <th class="px-6 py-4 font-semibold text-gray-700 uppercase tracking-wider text-center">
                             Actions
@@ -112,7 +112,7 @@
                                     {{-- Edit --}}
                                     <a href="{{ route($editUrl, $item->id) }}"
                                        class="sidebar-icon-button text-yellow-500 hover:text-yellow-600"
-                                       title="Edit">
+                                       title="{{__('label.edit')}}">
                                         <x-icon name="edit"/>
                                     </a>
 
@@ -120,7 +120,7 @@
                                     <button type="button"
                                             onclick="openModal('{{ route($deleteUrl, $item->id) }}')"
                                             class="sidebar-icon-button text-red-500 hover:text-red-600"
-                                            title="Delete">
+                                            title="{{__('label.delete')}}">
                                         <x-icon name="trash"/>
                                     </button>
                                 </div>

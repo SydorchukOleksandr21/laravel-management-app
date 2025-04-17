@@ -24,5 +24,6 @@
 </div>
 
 @stack('scripts')
+<script src="{{ asset('js/components/form/numberInput.js') }}"></script>
 </body>
 </html>

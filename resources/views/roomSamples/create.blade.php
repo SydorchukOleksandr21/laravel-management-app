@@ -3,7 +3,7 @@
 @section('content')
     @include('roomSamples.form', [
     'buttonUrl' => "/room-sample",
-     'buttonLabel' => 'Create',
+     'buttonLabel' => __('label.create'),
      'buttonMethod' => 'POST',
      'roomSample' => null
      ])

@@ -3,7 +3,7 @@
 @section('content')
     @include('roomSamples.form', [
     'buttonUrl' => "/room-sample/$roomSample->id",
-     'buttonLabel' => 'Update',
+     'buttonLabel' => __('label.edit'),
      'buttonMethod' => 'PUT',
      'roomSample' => $roomSample
      ])

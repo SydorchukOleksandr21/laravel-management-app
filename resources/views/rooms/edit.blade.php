@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-    @include('roomSamples.form', [
-    'buttonUrl' => "/room-sample/$roomSample->id",
-     'buttonLabel' => 'Update',
+    @include('rooms.form', [
+    'buttonUrl' => "/room/$room->id",
+     'buttonLabel' => __('label.edit'),
      'buttonMethod' => 'PUT',
-     'roomSample' => $roomSample
+     'room' => $room
      ])
 @endsection

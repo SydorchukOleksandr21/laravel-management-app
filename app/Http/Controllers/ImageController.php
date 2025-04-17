@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\base\Controller;
+use App\Interfaces\ImageModelInterface;
 use App\Services\Core\ImageModelService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -22,7 +23,7 @@ class ImageController extends Controller
         $class = 'App\\Models\\' . Str::studly($modelName);
 
         // Ensure the class exists and is a subclass of Model
-        if (!class_exists($class) || !is_subclass_of($class, Model::class)) {
+        if (!class_exists($class) || !is_subclass_of($class, ImageModelInterface::class)) {
             abort(404, "Model '$modelName' not found.");
         }
 
