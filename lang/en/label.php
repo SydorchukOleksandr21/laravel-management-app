@@ -11,4 +11,5 @@ return [
     'value' => 'Value',
 
     'room_details' => 'Room Details',
+    'rooms' => 'Rooms',
 ];

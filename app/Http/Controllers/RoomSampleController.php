@@ -45,7 +45,7 @@ class RoomSampleController extends ResourceController
         return view('roomSamples.create');
     }
 
-    public function show(int $id)
+    public function show($id)
     {
         $roomSample = RoomSample::findOrFail($id);
 

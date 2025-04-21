@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('room_sample_id')->constrained(RoomSample::tableName())->onDelete('cascade');
             $table->integer('floor');
-            $table->integer('number');
+            $table->integer('number')->unique();
             $table->string('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();

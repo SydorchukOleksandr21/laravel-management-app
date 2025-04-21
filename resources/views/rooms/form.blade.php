@@ -1,3 +1,5 @@
+@props(['buttonMethod', 'buttonLabel', 'buttonUrl', 'room'])
+
 @php
     $isEdit = isset($room);
 @endphp
@@ -10,8 +12,8 @@
 
         <form
             id="roomSampleForm"
+            action="{{ $buttonUrl }}"
             method="POST"
-            action="#"
             enctype="multipart/form-data"
             autocomplete="off"
             class="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -57,6 +59,13 @@
                     type="textarea"
                     label="{{ __('property.notes') }}"
                 />
+
+                <x-search-input
+                    url="{{ route('room-sample.list') }}"
+                    placeholder="Search for items..."
+                    name="item_id"
+                />
+
             </div>
 
             {{-- Button Row --}}
@@ -72,8 +81,6 @@
                     type="submit"
                     id="saveButton"
                     class="btn btn-primary py-2 px-6 w-full md:w-auto"
-                    data-url="{{ $buttonUrl }}"
-                    data-method="{{ $buttonMethod }}"
                 >
                     {{ $buttonLabel }}
                 </button>

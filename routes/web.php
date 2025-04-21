@@ -40,6 +40,8 @@ Route::resource('booking', BookingController::class);
 
 Route::resource('guest', GuestController::class);
 
+Route::get('/room-sample/list', [RoomSampleController::class, 'list'])
+    ->name('room-sample.list');
 Route::resource('room-sample', RoomSampleController::class);
 
 Route::resource('room', RoomController::class);
