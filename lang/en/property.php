@@ -13,6 +13,7 @@ return [
     'description' => 'Description',
     'room_image' => 'Room Image',
     'room_parameters' => 'Parameters',
+    'room_sample' => 'Room Sample',
     'email' => 'Email',
     'email_verified_at' => 'Email Verified At',
     'password' => 'Password',

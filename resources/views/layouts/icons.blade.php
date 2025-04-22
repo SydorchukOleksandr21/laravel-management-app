@@ -99,7 +99,8 @@
         <rect x="3" y="14" width="7" height="7"></rect>
     </symbol>
 
-    <symbol id="cuticon-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <symbol id="cuticon-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
         <rect x="4" y="10" width="16" height="8" rx="2"></rect>
         <path d="M4 18v2"></path>
         <path d="M20 18v2"></path>

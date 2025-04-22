@@ -37,8 +37,6 @@
         </div>
 
 
-
-
         <form method="GET" action="{{ route($indexUrl) }}" class="relative w-full sm:w-64 py-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -51,8 +49,7 @@
         </form>
 
 
-
-    @if ($items->count())
+        @if ($items->count())
             <div class="overflow-x-auto rounded-xl shadow-lg">
                 <table class="min-w-full bg-white text-base text-left border border-gray-200">
                     <thead class="bg-gray-200">
@@ -79,7 +76,7 @@
                                     @switch($type)
                                         @case(\App\Enums\GridValueType::Image)
                                             <img
-                                                src="{{ route("image.show", ["modelName" => class_basename($items->first()), "modelId" => $item, "property" => $field]) }}"
+                                                src="{{ route('image.show', ['modelName' => class_basename($items->first()), 'modelId' => $item, 'property' => $field]) }}"
                                                 class="w-16 h-16 object-cover rounded-md border"/>
                                             @break
 
@@ -92,10 +89,26 @@
 
                                         @case(\App\Enums\GridValueType::Currency)
                                             {{ $value }} $
-
                                             @break
+
+                                        @case(\App\Enums\GridValueType::Link)
+                                            @php
+                                                if (!isset($labels[$field]['route']) ) {
+                                                    throw new \RuntimeException("Missing 'route' for GridValueType::Link");
+                                                }
+
+                                                $funcName = $labels[$field]['object'];
+                                                $property = $labels[$field]['property'];
+                                            @endphp
+
+                                            <a href="{{ route($labels[$field]['route'], ["model" => $value]) }}"
+                                               class="text-blue-600 hover:underline">
+                                                {{ $item->$funcName->$property }}
+                                            </a>
+                                            @break
+
                                         @default
-                                            {{ $value ?? "-" }}
+                                            {{ $value ?? '-' }}
                                     @endswitch
                                 </td>
                             @endforeach

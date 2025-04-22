@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GridValueType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -37,5 +38,33 @@ class Room extends AbstractModel
     public function roomSample(): BelongsTo
     {
         return $this->belongsTo(RoomSample::class);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'name' => [
+                'name' => 'property.name',
+                'type' => GridValueType::String
+            ],
+            'room_number' => [
+                'name' => 'property.room_number',
+                'type' => GridValueType::String
+            ],
+            'floor' => [
+                'name' => 'property.floor',
+                'type' => GridValueType::String
+            ],
+            'room_sample_id' => [
+                'name' => 'property.room_sample',
+                'type' => GridValueType::Link,
+                'route' => ('room-sample.show'),
+                'object' => "roomSample",
+                'property' => "name",
+            ],
+        ];
     }
 }
