@@ -25,9 +25,11 @@ return [
     'room' => [
         'edit' => 'Edit Room',
         'create' => 'Create Room',
+        'view' => 'Room :number',
     ],
-    'room_sample' => [
+    'room-sample' => [
         'edit' => 'Edit Room Sample',
         'create' => 'Create Room Sample',
+        'view' => 'Room Sample :name',
     ]
 ];

@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\base\ResourceController;
 use App\Models\Room;
 use App\Services\Core\ModelSearch;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Validation\ValidationException;
 
 class RoomController extends ResourceController
 {
     /**
-     * Display a listing of the resource.
+     * @param Request $request
+     * @return Factory|Application|View
      */
-    public function index(Request $request)
+    public function index(Request $request): Factory|Application|View
     {
         $items = (new ModelSearch(Room::class))->search($request);
 
@@ -24,18 +30,19 @@ class RoomController extends ResourceController
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @return View|Application|Factory
      */
-    public function create()
+    public function create(): View|Application|Factory
     {
         return view('rooms.create');
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $amount = intval($request->get('rooms_count'));
         $startNumber = intval($request->get('number'));
@@ -49,8 +56,7 @@ class RoomController extends ResourceController
             ->toArray();
 
         if (!empty($existing)) {
-            $min = min($existing);
-            $max = max($existing);
+            $first = $existing[0];
 
             // Додаємо помилку до поля 'number'
             return redirect()
@@ -58,36 +64,40 @@ class RoomController extends ResourceController
                 ->withInput()
                 ->withErrors([
                     'number' => __('error.room.number_range', [
-                        'from' => $min,
-                        'to' => $max,
+                        'number' => $first,
                     ]),
                 ]);
         }
 
         $this->createRooms($request);
 
-        return redirect()->route('rooms.index')->with('success', __('Кімнати успішно створено.'));
+        return redirect()->route('room.show');
     }
 
-
     /**
-     * Display the specified resource.
+     * @param $id
+     * @return Factory|Application|View
      */
-    public function show(string $id)
+    public function show($id): Factory|Application|View
     {
+        $model = Room::findOrFail($id);
 
+        return view('rooms.show', compact('model'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param Room $model
+     * @return View|Application|Factory
      */
-    public function edit(string $id)
+    public function edit(Room $model): View|Application|Factory
     {
-        //
+        return view('rooms.edit', compact('model'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param Request $request
+     * @param string $id
+     * @return void
      */
     public function update(Request $request, string $id)
     {
@@ -109,7 +119,7 @@ class RoomController extends ResourceController
     /**
      * @param Request $request
      * @return array
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     private function createRooms(Request $request): array
     {
@@ -118,17 +128,19 @@ class RoomController extends ResourceController
         $startNumber = intval($request->get('number'));
 
         //DB::transaction(function () use (&$rooms, $amount, $request, $startNumber) {
-            for ($i = 0; $i < $amount; $i++) {
-                $room = new Room();
+        for ($i = 0; $i < $amount; $i++) {
+            $room = new Room();
 
-                $request->merge(['number' => $startNumber + $i]);
+            $request->merge(['number' => $startNumber + $i]);
 
-                $rooms[] = $this->save($room, $request, [
-                    'number' => 'required|integer|min:1|unique:rooms,number',
-                    'floor' => 'required|integer|min:1',
-                    'note' => 'nullable|string',
-                ]);
-            }
+            $rooms[] = $this->save($room, $request, [
+                'number' => 'required|integer|min:1|unique:rooms,number',
+                'floor' => 'required|integer|min:1',
+                'room_sample_id' => 'required|integer',
+                'note' => 'nullable|string',
+            ], true);
+        }
+
         //});
 
         return $rooms;
@@ -136,10 +148,13 @@ class RoomController extends ResourceController
 
 
     /**
-     * Remove the specified resource from storage.
+     * @param Room $model
+     * @return RedirectResponse
      */
-    public function destroy(string $id)
+    public function destroy(Room $model): RedirectResponse
     {
-        //
+        $model->delete();
+
+        return response()->redirectToRoute("room.index");
     }
 }

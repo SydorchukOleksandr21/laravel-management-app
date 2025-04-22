@@ -5,6 +5,6 @@
     'buttonUrl' => "/room-sample",
      'buttonLabel' => __('label.create'),
      'buttonMethod' => 'POST',
-     'roomSample' => null
+     'model' => null
      ])
 @endsection

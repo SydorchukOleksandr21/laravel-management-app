@@ -51,4 +51,8 @@
             class="form-input w-full p-2 border rounded-md"
         >
     @endif
+
+    @error($property)
+        <p class="text-destructive text-sm mt-1">{{ $message }}</p>
+    @enderror
 </div>

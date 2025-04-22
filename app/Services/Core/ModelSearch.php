@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class ModelSearch
 {
+    /**
+     * @var string
+     */
     private string $modelClass;
 
     public function __construct(string $modelClass)
@@ -43,5 +46,14 @@ class ModelSearch
         }
 
         return $query->paginate($perPage)->appends(['search' => $request->input('search')]);
+    }
+
+    /**
+     * @param $id
+     * @return Model
+     */
+    public function getByID($id): Model
+    {
+        return $this->modelClass::findOrFail($id);
     }
 }

@@ -1,7 +1,7 @@
-@props(['buttonMethod', 'buttonLabel', 'buttonUrl', 'room'])
+@props(['buttonMethod', 'buttonLabel', 'buttonUrl', 'model'])
 
 @php
-    $isEdit = isset($room);
+    $isEdit = isset($model);
 @endphp
 
 <div class="flex flex-col items-center justify-center min-h-screen bg-warm-gray-50 px-4">
@@ -11,59 +11,66 @@
         </h2>
 
         <form
-            id="roomSampleForm"
-            action="{{ $buttonUrl }}"
-            method="POST"
-            enctype="multipart/form-data"
-            autocomplete="off"
-            class="grid grid-cols-1 md:grid-cols-2 gap-6"
+                id="submitForm"
+                action="{{ $buttonUrl }}"
+                method="{{$isEdit ? $buttonMethod : 'POST'}}"
+                enctype="multipart/form-data"
+                autocomplete="off"
+                class="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
             @csrf
 
             {{-- Left Column --}}
             <div class="space-y-4">
                 <x-form.input
-                    :item="$room"
-                    property="number"
-                    type="number"
-                    min="1"
-                    required
-                    label="{{ __('property.room_number') }}"
+                        :item="$model"
+                        property="number"
+                        type="number"
+                        min="1"
+                        required
+                        label="{{ __('property.room_number') }}"
                 />
 
                 <x-form.input
-                    :item="$room"
-                    property="floor"
-                    type="number"
-                    min="1"
-                    required
-                    label="{{ __('property.floor') }}"
+                        :item="$model"
+                        property="floor"
+                        type="number"
+                        min="1"
+                        required
+                        label="{{ __('property.floor') }}"
                 />
             </div>
 
             {{-- Right Column --}}
             <div class="space-y-4">
-                <x-form.input
-                    :item="$room"
-                    property="rooms_count"
-                    type="number"
-                    min="1"
-                    default="1"
-                    required
-                    label="{{ __('property.rooms_count') }}"
-                />
+
+                @if(!$isEdit)
+                    <x-form.input
+                            :item="$model"
+                            property="rooms_count"
+                            type="number"
+                            min="1"
+                            default="1"
+                            required
+                            label="{{ __('property.rooms_count') }}"
+                    />
+                @endif
 
                 <x-form.input
-                    :item="$room"
-                    property="notes"
-                    type="textarea"
-                    label="{{ __('property.notes') }}"
+                        :item="$model"
+                        property="notes"
+                        type="textarea"
+                        label="{{ __('property.notes') }}"
                 />
 
-                <x-search-input
-                    url="{{ route('room-sample.list') }}"
-                    placeholder="Search for items..."
-                    name="item_id"
+                <x-form.search-input
+                        :item="$model"
+                        url="{{ route('room-sample.list') }}"
+                        placeholder="Search for room sample..."
+                        property="room_sample_id"
+                        label="Room Sample"
+                        labelField="name"
+                        required="true"
                 />
 
             </div>
@@ -71,16 +78,16 @@
             {{-- Button Row --}}
             <div class="col-span-2 mt-6 flex flex-col md:flex-row items-center gap-4">
                 <a
-                    href="{{ url()->previous() }}"
-                    class="btn btn-secondary py-2 px-4 w-full md:w-auto text-center"
+                        href="{{ url()->previous() }}"
+                        class="btn btn-secondary py-2 px-4 w-full md:w-auto text-center"
                 >
                     {{ __('Back') }}
                 </a>
 
                 <button
-                    type="submit"
-                    id="saveButton"
-                    class="btn btn-primary py-2 px-6 w-full md:w-auto"
+                        type="submit"
+                        id="saveButton"
+                        class="btn btn-primary py-2 px-6 w-full md:w-auto"
                 >
                     {{ $buttonLabel }}
                 </button>

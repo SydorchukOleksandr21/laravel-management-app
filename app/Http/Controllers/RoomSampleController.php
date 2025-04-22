@@ -3,23 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ValueType;
-use App\Http\Controllers\base\Controller;
 use App\Http\Controllers\base\ResourceController;
 use App\Models\RoomSample;
 use App\Services\Core\ImageModelService;
 use App\Services\Core\ModelSearch;
 use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RoomSampleController extends ResourceController
 {
     /**
      * @param Request $request
+     * @return Factory|Application|View
      */
-    public function index(Request $request)
+    public function index(Request $request): Factory|Application|View
     {
         $items = (new ModelSearch(RoomSample::class))->search($request);
 
@@ -35,26 +38,45 @@ class RoomSampleController extends ResourceController
      */
     public function list(Request $request): JsonResponse
     {
-        $items = (new ModelSearch(RoomSample::class))->search($request);
+        $modelSearch = new ModelSearch(RoomSample::class);
+        $id = $request->get("id", '');
+
+        if ($id) {
+            $items = $modelSearch->getByID(intval($id));
+        } else {
+            $items = $modelSearch->search($request);
+        }
 
         return response()->json($items);
     }
 
-    public function create(Request $request)
+    /**
+     * @param Request $request
+     * @return Factory|View|Application
+     */
+    public function create(Request $request): Factory|View|Application
     {
         return view('roomSamples.create');
     }
 
-    public function show($id)
+    /**
+     * @param $id
+     * @return Factory|View|Application
+     */
+    public function show($id): Factory|View|Application
     {
-        $roomSample = RoomSample::findOrFail($id);
+        $model = RoomSample::findOrFail($id);
 
-        return view('roomSamples.show', compact('roomSample'));
+        return view('roomSamples.show', compact('model'));
     }
 
-    public function edit(RoomSample $roomSample)
+    /**
+     * @param RoomSample $model
+     * @return Factory|Application|View
+     */
+    public function edit(RoomSample $model): Factory|Application|View
     {
-        return view('roomSamples.edit', compact('roomSample'));
+        return view('roomSamples.edit', ['model' => $model]);
     }
 
 
@@ -80,17 +102,17 @@ class RoomSampleController extends ResourceController
      * Update an existing RoomSample record.
      *
      * @param Request $request
-     * @param RoomSample $roomSample
+     * @param RoomSample $model
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, RoomSample $roomSample): JsonResponse
+    public function update(Request $request, RoomSample $model): JsonResponse
     {
-        $roomSample = $this->saveRoomSample($roomSample, $request, false);
+        $model = $this->saveRoomSample($model, $request, false);
 
         return response()->json([
             'message' => 'Room sample updated successfully',
-            'id' => $roomSample->id
+            'id' => $model->id
         ], 200);
     }
 
@@ -156,16 +178,16 @@ class RoomSampleController extends ResourceController
     }
 
     /**
-     * @param RoomSample $roomSample
-     * @return \Illuminate\Http\RedirectResponse
+     * @param RoomSample $model
+     * @return RedirectResponse
      */
-    public function destroy(RoomSample $roomSample): \Illuminate\Http\RedirectResponse
+    public function destroy(RoomSample $model): RedirectResponse
     {
-        if (Storage::exists($roomSample->getImagePath())) {
-            Storage::delete($roomSample->getImagePath());
+        if (Storage::exists($model->getImagePath())) {
+            Storage::delete($model->getImagePath());
         }
 
-        $roomSample->delete();
+        $model->delete();
 
         return response()->redirectToRoute("room-sample.index");
     }

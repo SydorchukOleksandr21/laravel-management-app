@@ -95,7 +95,7 @@
 
                                             @break
                                         @default
-                                            {{ $value }}
+                                            {{ $value ?? "-" }}
                                     @endswitch
                                 </td>
                             @endforeach

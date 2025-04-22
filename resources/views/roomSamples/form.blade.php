@@ -3,20 +3,21 @@
     <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
         <div class="relative mb-4">
             <h2 class="text-2xl font-semibold text-center">
-                {{ isset($roomSample) ? __('property.room_sample.edit') : __('property.room_sample.create') }}
+                {{ isset($model) ? __('property.room_sample.edit') : __('property.room_sample.create') }}
             </h2>
         </div>
 
-        <form id="roomSampleForm" class="grid grid-cols-1 md:grid-cols-2 gap-6" autocomplete="off">
+
+        <form id="submitForm" class="grid grid-cols-1 md:grid-cols-2 gap-6" autocomplete="off">
             @csrf
 
             <!-- Left Column: Basic Fields -->
             <div class="space-y-4">
-                <x-form.input :item="$roomSample" property="name" type="text" required />
-                <x-form.input :item="$roomSample" property="person_count" type="number" min="1" required />
-                <x-form.input :item="$roomSample" property="square_area" type="number" min="1" required />
-                <x-form.input :item="$roomSample" property="price" type="number" min="1" required />
-                <x-form.input :item="$roomSample" property="description" type="textarea" />
+                <x-form.input :item="$model" property="name" type="text" required />
+                <x-form.input :item="$model" property="person_count" type="number" min="1" required />
+                <x-form.input :item="$model" property="square_area" type="number" min="1" required />
+                <x-form.input :item="$model" property="price" type="number" min="1" required />
+                <x-form.input :item="$model" property="description" type="textarea" />
             </div>
 
             <!-- Right Column: Image Upload -->
@@ -24,10 +25,10 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Room Image</label>
                     @php
-                        $hasImage = isset($roomSample) && $roomSample->image_path;
+                        $hasImage = isset($model) && $model->image_path;
                         $imageSrc = $hasImage ? route("image.show", [
-                            'modelName' => class_basename($roomSample),
-                            'modelId' => $roomSample,
+                            'modelName' => class_basename($model),
+                            'modelId' => $model,
                             'property' => 'image_path'
                         ]) : '';
                     @endphp
@@ -53,8 +54,8 @@
                 <label class="block text-lg font-semibold text-gray-700">Room Parameters</label>
 
                 <div id="roomParametersContainer" class="mt-2">
-                    @if($roomSample && $roomSample->roomParameters)
-                        @foreach($roomSample->roomParameters as $param)
+                    @if($model && $model->roomParameters)
+                        @foreach($model->roomParameters as $param)
                             @include('components.roomParameterTemplate', ['parameter' => $param])
                         @endforeach
                     @endif

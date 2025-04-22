@@ -1,5 +1,5 @@
     document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('#roomSampleForm');
+    const form = document.querySelector('#submitForm');
     const saveButton = document.querySelector('#saveButton');
 
     if (!form || !saveButton) return;

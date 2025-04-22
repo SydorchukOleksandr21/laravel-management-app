@@ -2,6 +2,6 @@
 
 return [
     'room' => [
-        'number_range' => 'Rooms in number range :from–:to already exist',
+        'number_range' => 'Room with number :number already exists',
     ]
 ];

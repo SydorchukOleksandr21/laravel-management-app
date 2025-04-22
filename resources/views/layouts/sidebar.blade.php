@@ -61,6 +61,12 @@
                 'label' => 'Room Samples'
             ])
 
+            @include('components.sidebarButton', [
+                'routeName' => 'room.index',
+                'iconName' => 'bed',
+                'label' => 'Rooms'
+            ])
+
             <a href="#analytics" class="sidebar-link">
                 <x-icon name="bar-chart"/>
                 <span>Analytics</span>

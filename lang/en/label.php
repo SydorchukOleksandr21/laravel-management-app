@@ -10,6 +10,7 @@ return [
     'name' => 'Name',
     'value' => 'Value',
 
-    'room_details' => 'Room Details',
     'rooms' => 'Rooms',
+    'notes-empty' => 'No notes yet',
+    'not-assigned' => 'Not assigned',
 ];

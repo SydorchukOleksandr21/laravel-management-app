@@ -2,9 +2,9 @@
 
 @section('content')
     @include('rooms.form', [
-    'buttonUrl' => "/room/$room->id",
+    'buttonUrl' => "/room/$model->id",
      'buttonLabel' => __('label.edit'),
      'buttonMethod' => 'PUT',
-     'room' => $room
+     'model' => $model
      ])
 @endsection
