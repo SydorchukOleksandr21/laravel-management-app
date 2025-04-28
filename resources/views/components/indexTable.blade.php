@@ -1,5 +1,6 @@
 @props([
-    'className'
+    'className',
+    'header',
     ])
 @php
     use Illuminate\Support\Str;
@@ -27,7 +28,7 @@
 
     <div class="container mx-auto py-6 px-4">
         <div class="flex justify-between items-center mb-2">
-            <h1 class="text-3xl font-bold text-gray-800">{{ $className }} List</h1>
+            <h1 class="text-3xl font-bold text-gray-800">{{ $header }}</h1>
 
             <a href="{{ route($createUrl) }}"
                class="inline-flex items-center px-4 py-2 btn-primary text-white rounded-xl shadow hover:bg-green-700 transition"

@@ -1,11 +1,7 @@
 @props(['buttonMethod', 'buttonLabel', 'buttonUrl', 'model' => null])
 
-@php
-    $isEdit = intval(isset($model));
-@endphp
-
 <x-form.form
-    :isEdit="$isEdit"
+    :isEdit="intval(isset($model))"
     :labelEdit="__('property.guest.edit')"
     :labelCreate="__('property.guest.create')"
     :action="$buttonUrl"
@@ -44,6 +40,5 @@
 
 @push('scripts')
     <script src="{{ asset('js/components/phoneNumberComponent.js') }}"></script>
-
     <script src="{{ asset('js/components/requiredFieldsButtonActivation.js') }}" defer></script>
 @endpush

@@ -7,30 +7,29 @@
         :urlDelete="route('guest.destroy', $model)"
         :itemId="$model->id"
     >
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Left Column -->
             <div class="space-y-4">
-                {{-- Name --}}
-                <div>
-                    <label class="block font-semibold text-gray-700">{{ __('property.guest.name') }}:</label>
-                    <p class="p-3 border rounded-md bg-gray-100">{{ $model->name }}</p>
-                </div>
+                <!-- Name -->
+                <x-display.label
+                    :label="__('property.guest.name')"
+                    :value="$model->name"
+                />
 
-                {{-- Email --}}
-                <div>
-                    <label class="block font-semibold text-gray-700">{{ __('property.guest.email') }}:</label>
-                    <p class="p-3 border rounded-md bg-gray-100">{{ $model->email }}</p>
-                </div>
+                <!-- Email -->
+                <x-display.label
+                    :label="__('property.guest.email')"
+                    :value="$model->email"
+                />
             </div>
 
             <!-- Right Column -->
             <div class="space-y-4">
-                {{-- Phone Number --}}
-                <div>
-                    <label class="block font-semibold text-gray-700">{{ __('property.guest.phone_number') }}:</label>
-                    <p class="p-3 border rounded-md bg-gray-100">{{ $model->phone_number }}</p>
-                </div>
+                <!-- Phone Number -->
+                <x-display.label
+                    :label="__('property.guest.phone_number')"
+                    :value="$model->phone_number"
+                />
             </div>
         </div>
     </x-item-show-card>

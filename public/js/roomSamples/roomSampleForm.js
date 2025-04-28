@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const saveButton = document.getElementById('saveButton');
+    saveButton.type = "button";
+
+    const form = document.getElementById('submitForm');
+
     const nameInput = document.getElementById('name');
     const descriptionInput = document.getElementById('description');
     const personCountInput = document.getElementById('person_count');
@@ -100,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
             image: base64Image // Add Base64 image
         };
 
-        const url = saveButton.getAttribute("data-url");
-        const method = saveButton.getAttribute("data-method");
+        const url = form.getAttribute("action");
+        const method = form.getAttribute("method");
 
         // Send the data as a JSON object in a POST request
         fetch(url, {

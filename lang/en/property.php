@@ -24,16 +24,20 @@ return [
     'is_paid' => 'Is Paid',
 
     'room' => [
+        'header' => 'Rooms',
         'edit' => 'Edit Room',
         'create' => 'Create Room',
         'view' => 'Room :number',
+        'room-sample' => 'Room Sample',
     ],
     'room-sample' => [
+        'header' => 'Room Samples',
         'edit' => 'Edit Room Sample',
         'create' => 'Create Room Sample',
         'view' => 'Room Sample :name',
     ],
     'guest' =>[
+        'header' => 'Guests',
         'edit' => 'Edit Guest',
         'create' => 'Create Guest',
         'view' => 'Guest :name',

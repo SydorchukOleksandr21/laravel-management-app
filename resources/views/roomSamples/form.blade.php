@@ -1,15 +1,12 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-warm-gray-50 px-4">
-    <!-- Form Container -->
-    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
-        <div class="relative mb-4">
-            <h2 class="text-2xl font-semibold text-center">
-                {{ isset($model) ? __('property.room_sample.edit') : __('property.room_sample.create') }}
-            </h2>
-        </div>
+@props(['buttonMethod', 'buttonLabel', 'buttonUrl', 'model'])
 
-
-        <form id="submitForm" class="grid grid-cols-1 md:grid-cols-2 gap-6" autocomplete="off">
-            @csrf
+<x-form.form
+    :isEdit="intval(isset($model))"
+    :labelEdit="__('property.guest.edit')"
+    :labelCreate="__('property.guest.create')"
+    :action="$buttonUrl"
+    :method="$buttonMethod"
+>
 
             <!-- Left Column: Basic Fields -->
             <div class="space-y-4">
@@ -69,21 +66,7 @@
                 <button type="button" id="addParameterButton" class="mt-2 btn btn-secondary">+ Add Parameter</button>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="col-span-1 md:col-span-2 mt-6">
-                <div class="flex flex-col md:flex-row items-center gap-4">
-                    <a href="{{ url()->previous() }}" class="btn btn-secondary w-full md:w-auto">Back</a>
-                    <button type="button" id="saveButton"
-                            class="btn btn-primary w-full md:flex-1"
-                            data-url="{{ $buttonUrl }}"
-                            data-method="{{ $buttonMethod }}" disabled>
-                        {{ $buttonLabel }}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+</x-form.form>
 
 @push('scripts')
     <script src="{{ asset('js/components/requiredFieldsButtonActivation.js') }}"></script>

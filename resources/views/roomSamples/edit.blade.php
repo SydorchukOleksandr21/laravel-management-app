@@ -2,7 +2,7 @@
 
 @section('content')
     @include('roomSamples.form', [
-    'buttonUrl' => "/room-sample/$model->id",
+    'buttonUrl' => route('room-sample.update',  ['model' => $model]),
      'buttonLabel' => __('label.edit'),
      'buttonMethod' => 'PUT',
      'model' => $model

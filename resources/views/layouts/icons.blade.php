@@ -43,6 +43,13 @@
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
     </symbol>
 
+    <symbol id="cuticon-user" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"></circle>
+        <path d="M12 16c-4 0-6 2-6 4v2h12v-2c0-2-2-4-6-4z"></path>
+    </symbol>
+
+
     <symbol id="cuticon-document" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
