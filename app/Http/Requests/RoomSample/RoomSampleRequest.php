@@ -10,9 +10,10 @@ class RoomSampleRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'price' => 'required|integer|min:1',
             'person_count' => 'required|integer|min:1|max:100',
             'square_area' => 'required|integer|min:1|max:1000',
-            'description' => 'required|string',
+            'description' => 'string',
             'image_path' => 'nullable|string'
         ];
     }

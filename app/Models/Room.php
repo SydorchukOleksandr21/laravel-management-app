@@ -6,7 +6,8 @@ use App\Enums\GridValueType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property string name
+ * @property int id
+ * @property int number
  * @property string notes
  * @property int floor
  * @property int room_sample_id
@@ -26,9 +27,9 @@ class Room extends AbstractModel
      * @var string[]
      */
     protected $fillable = [
-        'floor',
-        'number',
         'room_sample_id',
+        'number',
+        'floor',
         'notes'
     ];
 

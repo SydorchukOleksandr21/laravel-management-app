@@ -1,5 +1,10 @@
-@php use Illuminate\Support\Str;
+@props([
+    'className'
+    ])
+@php
+    use Illuminate\Support\Str;
 @endphp
+
 @extends('app')
 
 @section('content')
@@ -32,18 +37,15 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M12 4v16m8-8H4"/>
                 </svg>
-                Create
+                {{__('label.create')}}
             </a>
         </div>
 
 
         <form method="GET" action="{{ route($indexUrl) }}" class="relative w-full sm:w-64 py-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
+                <x-icon name="magnifier" width="18" height="18" viewBox="0 0 24 24" fill="none"/>
+            </div>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
                    class="pl-10 bg-secondary border-none h-10 w-full rounded-md px-3 py-2 text-base">
         </form>
@@ -55,7 +57,7 @@
                     <thead class="bg-gray-200">
                     <tr>
                         @foreach ($modelInstance->getFillable() as $field)
-                            <th class="px-6 py-2 font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
+                            <th class="px-6 py-2 font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap  text-center">
                                 {{ __($labels[$field]['name'] ?? ucfirst(str_replace('_', ' ', $field))) }}                            </th>
                         @endforeach
                         <th class="px-6 py-4 font-semibold text-gray-700 uppercase tracking-wider text-center">
@@ -72,7 +74,7 @@
                                     $value = $item->$field;
                                 @endphp
 
-                                <td class="px-6 py-2 text-gray-900 whitespace-nowrap">
+                                <td class="px-6 py-2 text-gray-900 whitespace-nowrap text-center">
                                     @switch($type)
                                         @case(\App\Enums\GridValueType::Image)
                                             <img

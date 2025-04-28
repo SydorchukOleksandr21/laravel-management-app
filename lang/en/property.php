@@ -32,5 +32,14 @@ return [
         'edit' => 'Edit Room Sample',
         'create' => 'Create Room Sample',
         'view' => 'Room Sample :name',
+    ],
+    'guest' =>[
+        'edit' => 'Edit Guest',
+        'create' => 'Create Guest',
+        'view' => 'Guest :name',
+
+        'name' => 'Name',
+        'phone_number' => 'Phone Number',
+        'email' => 'Email',
     ]
 ];

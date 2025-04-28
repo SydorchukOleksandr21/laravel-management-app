@@ -31,6 +31,9 @@ abstract class ResourceController extends Controller
                 throw new ValidationException($validator);
             }
         }
+        else{
+            $data = $request->validated();
+        }
 
         $model->fill($data);
 

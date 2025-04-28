@@ -22,6 +22,7 @@
     --color-warning: #F59E0B; /* Soft amber for warnings */
     --color-info: #3B82F6; /* Calm blue for information */
     --color-white: #FFFFFF; /* Pure white */
+    --color-marker-important: #fb2c36; /* Pure white */
     --color-card-background: var(--color-white); /* Card background */
 
     /* Radius */
@@ -43,8 +44,12 @@
     --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
-.border{
+.border {
     border-width: 0px;
+}
+
+.marker-important {
+    color: var(--color-marker-important);
 }
 
 body {
@@ -55,8 +60,8 @@ body {
     padding: 0;
 }
 
-.phone-number{
-    div.iti{
+.phone-number {
+    div.iti {
         width: 100%;
     }
 }
@@ -443,7 +448,6 @@ body {
 }
 
 
-
 /* Sidebar Styles */
 .sidebar {
     width: 260px;
@@ -595,7 +599,6 @@ body {
 }
 
 
-
 /* general.css */
 .form-select {
     border-radius: var(--radius-sm);
@@ -604,13 +607,15 @@ body {
 }
 
 .form-option {
-    @apply text-gray-900; /* Apply text color */
+    @apply text-gray-900;
+    /* Apply text color */
 }
 
 /* Option hover and focus effects (optional) */
 .form-select option:hover {
     @apply bg-gray-100;
 }
+
 .form-select option:focus {
     @apply bg-indigo-200;
 }

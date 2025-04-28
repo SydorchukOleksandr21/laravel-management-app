@@ -31,6 +31,10 @@
         class="absolute bg-white border border-gray-300 w-full mt-1 rounded shadow-md max-h-60 overflow-auto z-10 hidden">
         <!-- Results will be populated here -->
     </ul>
+
+    @error($property)
+    <p class="text-destructive text-sm mt-1">{{ $message }}</p>
+    @enderror
 </div>
 
 <script>

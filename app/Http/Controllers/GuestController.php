@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\base\Controller;
+use App\Http\Controllers\base\ResourceController;
 use App\Http\Requests\Guest\GuestRequest;
 use App\Models\Guest;
+use App\Services\Core\ModelSearch;
 use App\Services\Guest\GuestService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Validation\ValidationException;
 
-class GuestController extends Controller
+class GuestController extends ResourceController
 {
     /**
      * @var GuestService
@@ -24,71 +30,113 @@ class GuestController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @param Request $request
+     * @return Factory|View|Application|object
      */
-    public function index()
+    public function index(Request $request): Factory|Application|View
     {
-        //
+        $items = (new ModelSearch(Guest::class))->search($request);
+
+        return view('guests.index', [
+            'items' => $items,
+            'className' => Guest::class,
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @return View|Application|Factory
      */
-    public function store(Request $request)
+    public function create(): View|Application|Factory
     {
-        //
+        return view('guests.create');
+    }
+
+    /**
+     * @param Guest $model
+     * @return View|Application|Factory
+     */
+    public function edit(Guest $model): View|Application|Factory
+    {
+        return view('guests.edit', compact('model'));
+    }
+
+    /**
+     * @param GuestRequest $request
+     * @return RedirectResponse
+     * @throws ValidationException
+     */
+    public function store(GuestRequest $request): RedirectResponse
+    {
+        $model = new Guest();
+        $this->saveGuest($model, $request);
+
+        return redirect()->route('guest.index');
+    }
+
+    /**
+     * @param Guest $model
+     * @param GuestRequest $request
+     * @return Guest
+     * @throws ValidationException
+     */
+    private function saveGuest(Guest $model, GuestRequest $request): Guest
+    {
+        $this->save($model, $request);
+
+        return $model;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Guest $model): Factory|Application|View
     {
-        //
+        return view('guests.show', compact('model'));
     }
 
-    /**
-     * @param GuestRequest $request
-     * @param string $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(GuestRequest $request, string $id)
+    public function update(GuestRequest $request, Guest $model)
     {
         $validated = $request->validated();
+        $guest = $this->saveGuest($model, $request);
 
-        $guest = Guest::where('phone_number', $validated['phone_number'])->first();
-
-        if ($guest) {
-            $this->guestService->update(
-                $guest,
-                email: $validated['email'],
-                name: $validated['name'],
-            );
-
-            return response()->json([
-                'id' => $guest->id,
-                'existed' => true,
-            ]);
-
-        } else {
-            $guest = $this->guestService->create(
-                phone_number: $validated['phone_number'],
-                email: $validated['email'],
-                name: $validated['name'],
-            );
-
-            return response()->json([
-                'id' => $guest->id,
-                'existed' => false,
-            ]);
-        }
+        return redirect()->route('guest.show', compact('model'));
+//
+//        $guest = Guest::where('phone_number', $validated['phone_number'])->first();
+//
+//        if ($guest) {
+//            $this->guestService->update(
+//                $guest,
+//                email: $validated['email'],
+//                name: $validated['name'],
+//            );
+//
+//            return response()->json([
+//                'id' => $guest->id,
+//                'existed' => true,
+//            ]);
+//
+//        } else {
+//            $guest = $this->guestService->create(
+//                phone_number: $validated['phone_number'],
+//                email: $validated['email'],
+//                name: $validated['name'],
+//            );
+//
+//            return response()->json([
+//                'id' => $guest->id,
+//                'existed' => false,
+//            ]);
+//        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Guest $model
+     * @return RedirectResponse
      */
-    public function destroy(string $id)
+    public function destroy(Guest $model): RedirectResponse
     {
-        //
+        $model->delete();
+
+        return redirect()->route('guest.index');
     }
 }

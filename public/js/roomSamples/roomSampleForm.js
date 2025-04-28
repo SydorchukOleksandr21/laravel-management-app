@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('Error sending data:', error);
+                window.location.reload();
             });
     });
 });

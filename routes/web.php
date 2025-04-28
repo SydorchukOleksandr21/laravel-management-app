@@ -38,7 +38,9 @@ Route::prefix('auth')
 
 Route::resource('booking', BookingController::class);
 
-Route::resource('guest', GuestController::class);
+Route::resource('guest', GuestController::class)->parameters([
+    'guest' => 'model',
+]);
 
 Route::get('/room-sample/list', [RoomSampleController::class, 'list'])
     ->name('room-sample.list');
@@ -46,6 +48,9 @@ Route::get('/room-sample/list', [RoomSampleController::class, 'list'])
 Route::resource('room-sample', RoomSampleController::class)->parameters([
     'room-sample' => 'model',
 ]);
+
+Route::get('/room/list', [RoomController::class, 'list'])
+    ->name('room.list');
 
 Route::resource('room', RoomController::class)->parameters([
     'room' => 'model',

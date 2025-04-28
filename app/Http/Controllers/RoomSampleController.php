@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ValueType;
 use App\Http\Controllers\base\ResourceController;
+use App\Http\Requests\RoomSample\RoomSampleRequest;
 use App\Models\RoomSample;
 use App\Services\Core\ImageModelService;
 use App\Services\Core\ModelSearch;
@@ -15,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class RoomSampleController extends ResourceController
 {
@@ -87,7 +89,7 @@ class RoomSampleController extends ResourceController
      * @return JsonResponse
      * @throws Exception
      */
-    public function store(Request $request): JsonResponse
+    public function store(RoomSampleRequest $request): JsonResponse
     {
         $roomSample = new RoomSample();
         $roomSample = $this->saveRoomSample($roomSample, $request, true);
@@ -101,12 +103,12 @@ class RoomSampleController extends ResourceController
     /**
      * Update an existing RoomSample record.
      *
-     * @param Request $request
+     * @param RoomSampleRequest $request
      * @param RoomSample $model
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, RoomSample $model): JsonResponse
+    public function update(RoomSampleRequest $request, RoomSample $model): JsonResponse
     {
         $model = $this->saveRoomSample($model, $request, false);
 
@@ -116,17 +118,16 @@ class RoomSampleController extends ResourceController
         ], 200);
     }
 
-
     /**
      * Handle RoomSample creation or update.
      *
      * @param RoomSample $roomSample
-     * @param Request $request
+     * @param RoomSampleRequest $request
      * @param bool $isNew
      * @return RoomSample
-     * @throws Exception
+     * @throws ValidationException
      */
-    private function saveRoomSample(RoomSample $roomSample, Request $request, bool $isNew): RoomSample
+    private function saveRoomSample(RoomSample $roomSample, RoomSampleRequest $request, bool $isNew): RoomSample
     {
         $imageName = $roomSample->image_path;
 
@@ -146,15 +147,7 @@ class RoomSampleController extends ResourceController
             ]);
         }
 
-        $this->save($roomSample, $request, [
-            'name' => 'required|string|max:255',
-            'person_count' => 'required|integer|min:1',
-            'square_area' => 'required|numeric|min:0',
-            'description' => 'string',
-            'image' => 'string',
-            'price' => 'nullable|numeric',
-        ], false);
-
+        $this->save($roomSample, $request, isSave: false);
 
         $roomSample->save();
 

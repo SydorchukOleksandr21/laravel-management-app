@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\base\ResourceController;
+use App\Http\Requests\Room\RoomRequest;
 use App\Models\Room;
 use App\Services\Core\ModelSearch;
 use Illuminate\Http\RedirectResponse;
@@ -38,11 +39,11 @@ class RoomController extends ResourceController
     }
 
     /**
-     * @param Request $request
+     * @param RoomRequest $request
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(RoomRequest $request): RedirectResponse
     {
         $amount = intval($request->get('rooms_count'));
         $startNumber = intval($request->get('number'));
@@ -69,19 +70,17 @@ class RoomController extends ResourceController
                 ]);
         }
 
-        $this->createRooms($request);
+        $rooms = $this->createRooms($request);
 
-        return redirect()->route('room.show');
+        return redirect()->route('room.index');
     }
 
     /**
-     * @param $id
+     * @param Room $model
      * @return Factory|Application|View
      */
-    public function show($id): Factory|Application|View
+    public function show(Room $model): Factory|Application|View
     {
-        $model = Room::findOrFail($id);
-
         return view('rooms.show', compact('model'));
     }
 
@@ -95,13 +94,41 @@ class RoomController extends ResourceController
     }
 
     /**
-     * @param Request $request
-     * @param string $id
-     * @return void
+     * @param RoomRequest $request
+     * @param Room $model
+     * @return RedirectResponse
+     * @throws ValidationException
      */
-    public function update(Request $request, string $id)
+    public function update(RoomRequest $request, Room $model)
     {
-        //
+        $number = $request->number;
+
+        $isNumberExists = DB::table(Room::tableName())
+            ->where('number', $number)
+            ->exists();
+
+        if ($isNumberExists) {
+            $isBelongsToSameModel = DB::table(Room::tableName())
+                ->where('number', $number)
+                ->where('id', $model->id)
+                ->exists();
+
+            if (!$isBelongsToSameModel) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->withErrors([
+                        'number' => __('error.room.number_range', [
+                            'number' => $number,
+                        ]),
+                    ]);
+            }
+        }
+
+        $this->save($model, $request);
+
+        return redirect()->route('room.show', $model->id);
+
     }
 
     /**
@@ -117,35 +144,29 @@ class RoomController extends ResourceController
     }
 
     /**
-     * @param Request $request
+     * @param RoomRequest $request
      * @return array
      * @throws ValidationException
      */
-    private function createRooms(Request $request): array
+    private function createRooms(RoomRequest $request): array
     {
         $amount = intval($request->get('rooms_count'));
-        $rooms = [];
-        $startNumber = intval($request->get('number'));
+        $startNumber = intval($request->number);
 
-        //DB::transaction(function () use (&$rooms, $amount, $request, $startNumber) {
+        $rooms = [];
+
         for ($i = 0; $i < $amount; $i++) {
             $room = new Room();
+            $this->save($room, $request, isSave: false);
 
-            $request->merge(['number' => $startNumber + $i]);
+            $room->number = $startNumber + $i;
+            $room->save();
 
-            $rooms[] = $this->save($room, $request, [
-                'number' => 'required|integer|min:1|unique:rooms,number',
-                'floor' => 'required|integer|min:1',
-                'room_sample_id' => 'required|integer',
-                'note' => 'nullable|string',
-            ], true);
+            $rooms[] = $room;
         }
-
-        //});
 
         return $rooms;
     }
-
 
     /**
      * @param Room $model

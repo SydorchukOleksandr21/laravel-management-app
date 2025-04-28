@@ -1,21 +1,12 @@
 @extends('layouts.admin')
 
 @section('content')
-    <x-item-show-card>
-        <x-slot name="title">{{ __('property.room.view', ['number' => $model->number]) }}</x-slot>
-
-
-        <x-slot name="urlEdit">
-            {{ route('room.edit', $model) }}
-        </x-slot>
-
-        <x-slot name="urlDelete">
-            {{ route('room.destroy', $model) }}
-        </x-slot>
-
-        <x-slot name="itemId">
-            {{ $model->id }}
-        </x-slot>
+    <x-item-show-card
+        :title="__('property.room.view', ['number' => $model->number])"
+        :urlEdit="route('room.edit', $model)"
+        :urlDelete="route('room.destroy', $model)"
+        :itemId="$model->id"
+        >
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Left Column -->

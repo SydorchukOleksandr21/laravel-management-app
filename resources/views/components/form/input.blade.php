@@ -1,58 +1,71 @@
 @php use Illuminate\Support\Str; @endphp
+
 @props([
     'item' => null,
     'property',
     'label' => null,
+    'placeholder' => '',
     'type' => 'text',
     'required' => false,
-    'min' => -999999999,
-    'max' => 999999999,
+    'min' => null,
+    'max' => null,
     'default' => '',
 ])
 
 @php
     $value = old($property, $item?->$property ?? $default);
     $labelText = $label ?? Str::headline($property);
+    $inputClasses = 'form-input w-full p-2 border rounded-md';
 @endphp
 
 <div class="mb-4">
     <label for="{{ $property }}" class="block text-sm font-medium text-gray-700">
-        {{ $labelText }}{{ $required ? ' *' : '' }}
+        {{ $labelText }}@if($required)
+            <span class="marker-important">*</span>
+        @endif
     </label>
 
-    @if($type === 'textarea')
-        <textarea
-            id="{{ $property }}"
-            name="{{ $property }}"
-            {{ $required ? 'required' : '' }}
-            class="form-input w-full p-2 border rounded-md"
-        >{{ e($value) }}</textarea>
-    @elseif($type === 'number')
-        <input
-            type="number"
-            id="{{ $property }}"
-            name="{{ $property }}"
-            min="{{ $min }}"
-            max="{{ $max }}"
-            value="{{ $value }}"
-            {{ $required ? 'required' : '' }}
-            class="form-input w-full p-2 border rounded-md"
-            data-type="validated-number"
-            data-min="{{ $min }}"
-            data-max="{{ $max }}"
-        >
-    @else
-        <input
-            type="text"
-            id="{{ $property }}"
-            name="{{ $property }}"
-            value="{{ $value }}"
-            {{ $required ? 'required' : '' }}
-            class="form-input w-full p-2 border rounded-md"
-        >
-    @endif
+    @switch($type)
+        @case('textarea')
+            <textarea
+                id="{{ $property }}"
+                name="{{ $property }}"
+                class="{{ $inputClasses }}"
+                placeholder="{{ $placeholder }}"
+                @if($required) required @endif
+            >{{ old($property, $value) }}</textarea>
+            @break
+
+        @case('number')
+            <input
+                type="number"
+                id="{{ $property }}"
+                name="{{ $property }}"
+                value="{{ $value }}"
+                class="{{ $inputClasses }}"
+                placeholder="{{ $placeholder }}"
+                @if($min !== null) min="{{ $min }}" @endif
+                @if($max !== null) max="{{ $max }}" @endif
+                @if($required) required @endif
+                data-type="validated-number"
+                data-min="{{ $min }}"
+                data-max="{{ $max }}"
+            >
+            @break
+
+        @default
+            <input
+                type="{{ $type }}"
+                id="{{ $property }}"
+                name="{{ $property }}"
+                value="{{ $value }}"
+                class="{{ $inputClasses }}"
+                placeholder="{{ $placeholder }}"
+                @if($required) required @endif
+            >
+    @endswitch
 
     @error($property)
-        <p class="text-destructive text-sm mt-1">{{ $message }}</p>
+    <p class="text-destructive text-sm mt-1">{{ $message }}</p>
     @enderror
 </div>
