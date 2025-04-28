@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\base\Controller;
 use App\Http\Requests\Booking\BookingRequest;
-use App\Models\Booking;
-use App\Models\Guest;
 use App\Services\Booking\BookingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Mockery\Exception;
-use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {

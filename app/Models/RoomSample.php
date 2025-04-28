@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GridValueType;
 use App\Interfaces\ImageModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,6 +32,7 @@ class RoomSample extends AbstractModel implements ImageModelInterface
         'person_count',
         'square_area',
         'description',
+        'price',
         'image_path',
     ];
 
@@ -82,6 +84,35 @@ class RoomSample extends AbstractModel implements ImageModelInterface
             "image_path" => [
                 "name" => uniqid('room_', true),
             ]
+        ];
+    }
+
+    /**
+     * @return array[]
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'name' => [
+                'name' => 'property.name',
+                'type' => GridValueType::String
+            ],
+            'person_count' => [
+                'name' => 'property.person_count',
+                'type' => GridValueType::String
+            ],
+            'square_area' => [
+                'name' => 'property.square_area',
+                'type' => GridValueType::String,
+            ],
+            'image_path' => [
+                'name' => 'property.image_path',
+                'type' => GridValueType::Image
+            ],
+            'price' => [
+                'name' => 'property.price',
+                'type' => GridValueType::Currency
+            ],
         ];
     }
 }

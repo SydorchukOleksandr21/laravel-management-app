@@ -1,14 +1,10 @@
-@extends('app')
-
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
+@extends('layouts.admin')
 
 @section('content')
     @include('roomSamples.form', [
     'buttonUrl' => "/room-sample",
-     'buttonLabel' => 'Create',
+     'buttonLabel' => __('label.create'),
      'buttonMethod' => 'POST',
-     'roomSample' => null
+     'model' => null
      ])
 @endsection

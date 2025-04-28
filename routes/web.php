@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomSampleController;
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -36,8 +38,24 @@ Route::prefix('auth')
 
 Route::resource('booking', BookingController::class);
 
-Route::resource('guest', GuestController::class);
+Route::resource('guest', GuestController::class)->parameters([
+    'guest' => 'model',
+]);
 
-Route::resource('room-sample', RoomSampleController::class);
-Route::get('/room-sample/{roomSample}/image', [RoomSampleController::class, 'showImage'])
-    ->name('room-sample.image');
+Route::get('/room-sample/list', [RoomSampleController::class, 'list'])
+    ->name('room-sample.list');
+
+Route::resource('room-sample', RoomSampleController::class)->parameters([
+    'room-sample' => 'model',
+]);
+
+Route::get('/room/list', [RoomController::class, 'list'])
+    ->name('room.list');
+
+Route::resource('room', RoomController::class)->parameters([
+    'room' => 'model',
+]);
+
+Route::get('/image/{modelName}/{modelId}/{property}', [ImageController::class, 'show'])
+    ->name('image.show');
+

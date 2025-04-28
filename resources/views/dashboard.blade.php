@@ -1,8 +1,4 @@
-@extends('app')
-
-@section('sidebar')
-    @include('components.sidebar')
-@endsection
+@extends('layouts.admin')
 
 @section('header')
     <div class=" border-border">

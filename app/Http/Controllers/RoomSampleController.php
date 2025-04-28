@@ -3,22 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ValueType;
+use App\Http\Controllers\base\ResourceController;
+use App\Http\Requests\RoomSample\RoomSampleRequest;
 use App\Models\RoomSample;
 use App\Services\Core\ImageModelService;
+use App\Services\Core\ModelSearch;
 use Exception;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Validation\ValidationException;
 
-class RoomSampleController extends Controller
+class RoomSampleController extends ResourceController
 {
     /**
-     * Display a listing of the resource.
+     * @param Request $request
+     * @return Factory|Application|View
      */
-    public function index()
+    public function index(Request $request): Factory|Application|View
     {
-        //
+        $items = (new ModelSearch(RoomSample::class))->search($request);
+
+        return view('roomSamples.index', [
+            'items' => $items,
+            'className' => RoomSample::class,
+        ]);
     }
 
     /**
@@ -27,45 +40,45 @@ class RoomSampleController extends Controller
      */
     public function list(Request $request): JsonResponse
     {
-        $query = RoomSample::query();
+        $modelSearch = new ModelSearch(RoomSample::class);
+        $id = $request->get("id", '');
 
-        // Apply search filter if name parameter is provided
-        if ($request->has('name')) {
-            $query->where('name', 'like', '%' . $request->input('name') . '%');
+        if ($id) {
+            $items = $modelSearch->getByID(intval($id));
+        } else {
+            $items = $modelSearch->search($request);
         }
 
-        // Paginate the results
-        $roomTemplates = $query->paginate(10);
-
-        return response()->json($roomTemplates);
+        return response()->json($items);
     }
 
-    public function create(Request $request)
+    /**
+     * @param Request $request
+     * @return Factory|View|Application
+     */
+    public function create(Request $request): Factory|View|Application
     {
         return view('roomSamples.create');
     }
 
     /**
-     * @param RoomSample $roomSample
-     * @return BinaryFileResponse
+     * @param $id
+     * @return Factory|View|Application
      */
-    public function showImage(RoomSample $roomSample): BinaryFileResponse
+    public function show($id): Factory|View|Application
     {
-        $filePath = (new ImageModelService($roomSample))->getModelImageViewPath("image_path");
+        $model = RoomSample::findOrFail($id);
 
-        return response()->file(storage_path($filePath));
+        return view('roomSamples.show', compact('model'));
     }
 
-    public function show(int $id)
+    /**
+     * @param RoomSample $model
+     * @return Factory|Application|View
+     */
+    public function edit(RoomSample $model): Factory|Application|View
     {
-        $roomSample = RoomSample::findOrFail($id);
-
-        return view('roomSamples.show', compact('roomSample'));
-    }
-
-    public function edit(RoomSample $roomSample)
-    {
-        return view('roomSamples.edit', compact('roomSample'));
+        return view('roomSamples.edit', ['model' => $model]);
     }
 
 
@@ -74,8 +87,9 @@ class RoomSampleController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws Exception
      */
-    public function store(Request $request): JsonResponse
+    public function store(RoomSampleRequest $request): JsonResponse
     {
         $roomSample = new RoomSample();
         $roomSample = $this->saveRoomSample($roomSample, $request, true);
@@ -89,32 +103,31 @@ class RoomSampleController extends Controller
     /**
      * Update an existing RoomSample record.
      *
-     * @param Request $request
-     * @param RoomSample $roomSample
+     * @param RoomSampleRequest $request
+     * @param RoomSample $model
      * @return JsonResponse
      * @throws Exception
      */
-    public function update(Request $request, RoomSample $roomSample): JsonResponse
+    public function update(RoomSampleRequest $request, RoomSample $model): JsonResponse
     {
-        $roomSample = $this->saveRoomSample($roomSample, $request, false);
+        $model = $this->saveRoomSample($model, $request, false);
 
         return response()->json([
             'message' => 'Room sample updated successfully',
-            'id' => $roomSample->id
+            'id' => $model->id
         ], 200);
     }
-
 
     /**
      * Handle RoomSample creation or update.
      *
      * @param RoomSample $roomSample
-     * @param Request $request
+     * @param RoomSampleRequest $request
      * @param bool $isNew
      * @return RoomSample
-     * @throws Exception
+     * @throws ValidationException
      */
-    private function saveRoomSample(RoomSample $roomSample, Request $request, bool $isNew): RoomSample
+    private function saveRoomSample(RoomSample $roomSample, RoomSampleRequest $request, bool $isNew): RoomSample
     {
         $imageName = $roomSample->image_path;
 
@@ -125,20 +138,16 @@ class RoomSampleController extends Controller
                 }
             }
 
-            $imageModeService = new ImageModelService($roomSample);
             $base64Image = $request->input('image');
+            $imageModeService = new ImageModelService($roomSample);
             $imageName = $imageModeService->storeBase64Image("image_path", $base64Image);
-            //$imageName = $this->storeBase64Image($roomSample, $request->input('image'));
+
+            $roomSample->fill([
+                'image_path' => $imageName,
+            ]);
         }
 
-        // Convert values properly
-        $roomSample->fill([
-            'name' => $request->input('name', ''),
-            'person_count' => abs(intval($request->input('person_count', 0))),
-            'square_area' => abs(floatval($request->input('square_area', 0))),
-            'description' => $request->input('description', ''),
-            'image_path' => $imageName,
-        ]);
+        $this->save($roomSample, $request, isSave: false);
 
         $roomSample->save();
 
@@ -162,17 +171,17 @@ class RoomSampleController extends Controller
     }
 
     /**
-     * @param RoomSample $roomSample
-     * @return JsonResponse
+     * @param RoomSample $model
+     * @return RedirectResponse
      */
-    public function destroy(RoomSample $roomSample): JsonResponse
+    public function destroy(RoomSample $model): RedirectResponse
     {
-        if (Storage::exists($roomSample->getImagePath())) {
-            Storage::delete($roomSample->getImagePath());
+        if (Storage::exists($model->getImagePath())) {
+            Storage::delete($model->getImagePath());
         }
 
-        $roomSample->delete();
+        $model->delete();
 
-        return response()->json([], 204);
+        return response()->redirectToRoute("room-sample.index");
     }
 }

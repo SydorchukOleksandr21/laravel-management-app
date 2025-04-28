@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const descriptionInput = document.getElementById('description');
     const personCountInput = document.getElementById('person_count');
     const squareAreaInput = document.getElementById('square_area');
+    const priceInput = document.getElementById('price');
     const imageInput = document.getElementById('image');
     const uploadButton = document.getElementById('uploadButton');
     const removeButton = document.getElementById('removeButton');
@@ -45,12 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
     uploadButton.addEventListener('click', () => imageInput.click());
     imageInput.addEventListener('change', handleImageUpload);
     removeButton.addEventListener('click', removeImage);
-
-    nameInput.addEventListener('input', toggleSaveButton);
-    personCountInput.addEventListener('input', toggleSaveButton);
-    squareAreaInput.addEventListener('input', toggleSaveButton);
-
-    toggleSaveButton();
+    //
+    // nameInput.addEventListener('input', toggleSaveButton);
+    // personCountInput.addEventListener('input', toggleSaveButton);
+    // squareAreaInput.addEventListener('input', toggleSaveButton);
+    //
+    // toggleSaveButton();
 
     // Function to collect parameters data as an array of objects
     function collectParameters() {
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             name: nameInput.value,
             person_count: personCountInput.value,
             square_area: squareAreaInput.value,
+            price: priceInput.value,
             description: descriptionInput.value,
             room_parameters: collectParameters(),
             image: base64Image // Add Base64 image
@@ -120,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('Error sending data:', error);
+                window.location.reload();
             });
     });
 });

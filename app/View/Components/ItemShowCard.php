@@ -8,12 +8,29 @@ use Illuminate\View\Component;
 
 class ItemShowCard extends Component
 {
+    public string $title;
+    public string $urlEdit;
+    public string $urlDelete;
+    public string $itemId;
+
     /**
      * Create a new component instance.
+     *
+     * @param string $title
+     * @param string $urlEdit
+     * @param string $urlDelete
+     * @param string $itemId
      */
-    public function __construct()
-    {
-        //
+    public function __construct(
+        string $title,
+        string $urlEdit,
+        string $urlDelete,
+        string $itemId
+    ) {
+        $this->title = $title;
+        $this->urlEdit = $urlEdit;
+        $this->urlDelete = $urlDelete;
+        $this->itemId = $itemId;
     }
 
     /**
