@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\GridValueType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * @property string $id
@@ -51,6 +53,17 @@ class Booking extends Model
     ];
 
     /**
+     * @return void
+     */
+    public static function boot(): void
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $model->id = (string) Str::uuid();
+        });
+    }
+
+    /**
      * Get the room associated with the booking.
      */
     public function room(): BelongsTo
@@ -64,5 +77,48 @@ class Booking extends Model
     public function guest(): BelongsTo
     {
         return $this->belongsTo(Guest::class);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'room_id' => [
+                'name' => 'property.booking.room_id',
+                'type' => GridValueType::Link,
+                'route' => ('room.show'),
+                'object' => "room",
+                'property' => "number",
+            ],
+            'guest_id' => [
+                'name' => 'property.booking.guest_id',
+                'type' => GridValueType::Link,
+                'route' => ('guest.show'),
+                'object' => "guest",
+                'property' => "name",
+            ],
+            'pin_code' => [
+                'name' => 'property.booking.pin_code',
+                'type' => GridValueType::String,
+            ],
+            'date_start' => [
+                'name' => 'property.booking.date_start',
+                'type' => GridValueType::Date
+            ],
+            'date_end' => [
+                'name' => 'property.booking.date_end',
+                'type' => GridValueType::Date
+            ],
+            'price' => [
+                'name' => 'property.booking.price',
+                'type' => GridValueType::Currency
+            ],
+            'is_paid' => [
+                'name' => 'property.booking.is_paid',
+                'type' => GridValueType::Checkbox
+            ],
+        ];
     }
 }

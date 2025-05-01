@@ -24,16 +24,33 @@ return [
     'is_paid' => 'Is Paid',
 
     'room' => [
+        'header' => 'Rooms',
         'edit' => 'Edit Room',
         'create' => 'Create Room',
         'view' => 'Room :number',
+        'room-sample' => 'Room Sample',
     ],
     'room-sample' => [
+        'header' => 'Room Samples',
         'edit' => 'Edit Room Sample',
         'create' => 'Create Room Sample',
         'view' => 'Room Sample :name',
     ],
+    'booking' => [
+        'header' => 'Bookings',
+        'create' => 'Create Booking',
+        'view' => 'Booking #:id',
+        'price' => 'Price',
+        'date_start' => 'Start Date',
+        'date_end' => 'End Date',
+        'pin_code' => 'Pin',
+        'room_id' => 'Room',
+        'guest_id' => 'Guest',
+        'is_paid' => 'Payment status',
+        'room_sample_id' => 'Room Type',
+    ],
     'guest' =>[
+        'header' => 'Guests',
         'edit' => 'Edit Guest',
         'create' => 'Create Guest',
         'view' => 'Guest :name',

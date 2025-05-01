@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\base\ResourceController;
 use App\Http\Requests\Room\RoomRequest;
 use App\Models\Room;
+use App\Models\RoomSample;
+use App\Services\Booking\BookingService;
 use App\Services\Core\ModelSearch;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +31,29 @@ class RoomController extends ResourceController
             'items' => $items,
             'className' => Room::class,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function getAvailableRooms(Request $request): JsonResponse
+    {
+        // Отримуємо параметри з запиту
+        $dateStart = $request->input('dateStart');  // початкова дата
+        $dateEnd = $request->input('dateEnd');  // кінцева дата
+        $roomSampleId = $request->input('roomSampleId');  // ID зразка кімнати
+
+        // Перетворюємо їх у об'єкти DateTime
+        $dateStart = new \DateTime($dateStart);
+        $dateEnd = new \DateTime($dateEnd);
+
+        // Викликаємо метод для отримання доступних кімнат
+        $rooms = (new BookingService())->getAvailableRooms($dateStart, $dateEnd, $roomSampleId);
+
+        // Повертаємо результат у форматі JSON
+        return response()->json($rooms);
     }
 
     /**

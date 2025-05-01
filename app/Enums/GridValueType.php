@@ -9,6 +9,7 @@ enum GridValueType: int
     case Image = 4;
     case Currency = 5;
     case Link = 6;
+    case Date = 7;
 
     /**
      * Get a human-readable label.
@@ -21,6 +22,7 @@ enum GridValueType: int
             self::Image => 'Image',
             self::Currency => 'Currency',
             self::Link => 'Link',
+            self::Date => 'Date',
         };
     }
 

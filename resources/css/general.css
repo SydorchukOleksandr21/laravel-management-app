@@ -44,6 +44,20 @@
     --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
+input:disabled,
+textarea:disabled,
+select:disabled {
+    background-color: #f3f4f6; /* світло-сірий */
+    color: #6b7280; /* темно-сірий текст */
+    cursor: not-allowed;
+    opacity: 1; /* важливо, щоб не виглядали напівпрозорими */
+    border-color: #d1d5db; /* світло-сіра рамка */
+}
+
+.iti.iti--allow-dropdown {
+    width: 100%;
+}
+
 .border {
     border-width: 0px;
 }
@@ -626,4 +640,34 @@ body {
     outline: none;
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); /* focus:ring-2 focus:ring-indigo-200 */
 }
+
+/** Rooom box **/
+.room-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+
+.room-box {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: var(--color-text-white);
+}
+
+.room-box.selected {
+    background-color: var(--color-primary); /* ваш primary, напр. #22C55E */
+    color: var(--color-text-white);         /* напр. #ffffff */
+    border: 3px solid var(--color-success);
+}
+
+.room-box:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-primary);
+}
+
 

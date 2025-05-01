@@ -11,17 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard');
-})->name("main");
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-//Route::resource("Auth", AuthController::class);
-//
-//
-//Route::get("signin", fn() => to_route("Auth.create"));
-//Route::get("signout", fn() => to_route("Auth.delete"));
+})->name("dashboard");
 
 Route::prefix('auth')
     ->name('auth.')
@@ -36,25 +26,42 @@ Route::prefix('auth')
         Route::delete('logout', 'logout')->name('logout')->middleware(AuthMiddleware::class);
     });
 
-Route::resource('booking', BookingController::class);
+Route::prefix('api')
+    ->name('api.')
+    ->group(function () {
+        Route::get('/guest/list', [GuestController::class, 'list'])
+            ->name('guest.list');
 
-Route::resource('guest', GuestController::class)->parameters([
-    'guest' => 'model',
-]);
+        Route::get('/room-sample/list', [RoomSampleController::class, 'list'])
+            ->name('room-sample.list');
 
-Route::get('/room-sample/list', [RoomSampleController::class, 'list'])
-    ->name('room-sample.list');
+        Route::get('/room/list', [RoomController::class, 'list'])
+            ->name('room.list');
 
-Route::resource('room-sample', RoomSampleController::class)->parameters([
-    'room-sample' => 'model',
-]);
+        Route::get('/room/available', [RoomController::class, 'getAvailableRooms'])
+            ->name('room.available');
+    });
 
-Route::get('/room/list', [RoomController::class, 'list'])
-    ->name('room.list');
+Route::resource('booking', BookingController::class)
+    ->parameters([
+        'booking' => 'model',
+    ])
+    ->except(['edit', 'update']);
 
-Route::resource('room', RoomController::class)->parameters([
-    'room' => 'model',
-]);
+Route::resource('guest', GuestController::class)
+    ->parameters([
+        'guest' => 'model',
+    ]);
+
+Route::resource('room-sample', RoomSampleController::class)
+    ->parameters([
+        'room-sample' => 'model',
+    ]);
+
+Route::resource('room', RoomController::class)
+    ->parameters([
+        'room' => 'model',
+    ]);
 
 Route::get('/image/{modelName}/{modelId}/{property}', [ImageController::class, 'show'])
     ->name('image.show');

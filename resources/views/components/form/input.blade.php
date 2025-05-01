@@ -7,6 +7,7 @@
     'placeholder' => '',
     'type' => 'text',
     'required' => false,
+    'disabled' => false,
     'min' => null,
     'max' => null,
     'default' => '',
@@ -33,6 +34,7 @@
                 class="{{ $inputClasses }}"
                 placeholder="{{ $placeholder }}"
                 @if($required) required @endif
+                @if($disabled) disabled @endif
             >{{ old($property, $value) }}</textarea>
             @break
 
@@ -50,6 +52,7 @@
                 data-type="validated-number"
                 data-min="{{ $min }}"
                 data-max="{{ $max }}"
+                @if($disabled) disabled @endif
             >
             @break
 
@@ -62,6 +65,7 @@
                 class="{{ $inputClasses }}"
                 placeholder="{{ $placeholder }}"
                 @if($required) required @endif
+                @if($disabled) disabled @endif
             >
     @endswitch
 

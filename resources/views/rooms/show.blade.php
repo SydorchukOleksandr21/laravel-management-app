@@ -6,41 +6,25 @@
         :urlEdit="route('room.edit', $model)"
         :urlDelete="route('room.destroy', $model)"
         :itemId="$model->id"
-        >
+    >
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Left Column -->
             <div class="space-y-4">
-                <div>
-                    <label class="block font-semibold text-gray-700">{{ __('property.room_number') }}:</label>
-                    <p class="p-3 border rounded-md bg-gray-100">{{ $model->number }}</p>
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-gray-700">{{ __('property.floor') }}:</label>
-                    <p class="p-3 border rounded-md bg-gray-100">{{ $model->floor }}</p>
-                </div>
+                <x-display.label label="{{ __('property.room_number') }}" :value="$model->number"/>
+                <x-display.label label="{{ __('property.floor') }}" :value="$model->floor"/>
             </div>
 
             <!-- Right Column -->
             <div class="space-y-4">
-                <div>
-                    <label class="block font-semibold text-gray-700">{{ __('property.notes') }}:</label>
-                    <p class="p-3 border rounded-md bg-gray-100 whitespace-pre-wrap">{{ $model->notes ?: __('label.notes-empty') }}</p>
-                </div>
+                <x-display.label label="{{ __('property.notes') }}" :value="$model->notes ?: __('label.notes-empty')"/>
 
-                <div>
-                    <label class="block font-semibold text-gray-700">Room Sample:</label>
-                    @if($model->roomSample)
-                        <a href="{{ route('room-sample.show', $model->roomSample) }}"
-                           class="p-3 block border rounded-md bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition font-medium">
-                            {{ $model->roomSample->name }}
-                        </a>
-                    @else
-                        <p class="p-3 border rounded-md bg-gray-100 text-gray-500 italic">{{__("label.not-assigned")}}</p>
-                    @endif
-                </div>
-
+                <x-display.link-label
+                    :label="__('property.room.room-sample')"
+                    itemName="name"
+                    :value="$model->roomSample"
+                    :itemHref="route('room-sample.show', $model->roomSample)"
+                />
             </div>
         </div>
     </x-item-show-card>

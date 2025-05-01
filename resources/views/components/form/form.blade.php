@@ -20,9 +20,7 @@
             autocomplete="off"
             class="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-            @if(strtoupper($method) !== 'POST')
                 @method($method)
-            @endif
 
             @csrf
 
@@ -48,3 +46,7 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+    <script src="{{ asset('js/components/requiredFieldsButtonActivation.js') }}" defer></script>
+@endpush

@@ -1,5 +1,6 @@
 @props([
-    'className'
+    'className',
+    'header',
     ])
 @php
     use Illuminate\Support\Str;
@@ -23,11 +24,13 @@
         $viewUrl = $viewUrl ?? $urlPrefix . '.show';
         $editUrl = $editUrl ?? $urlPrefix . '.edit';
         $deleteUrl = $deleteUrl ?? $urlPrefix . '.destroy';
+
+        $routeEditExists = \Illuminate\Support\Facades\Route::has($editUrl);
     @endphp
 
     <div class="container mx-auto py-6 px-4">
         <div class="flex justify-between items-center mb-2">
-            <h1 class="text-3xl font-bold text-gray-800">{{ $className }} List</h1>
+            <h1 class="text-3xl font-bold text-gray-800">{{ $header }}</h1>
 
             <a href="{{ route($createUrl) }}"
                class="inline-flex items-center px-4 py-2 btn-primary text-white rounded-xl shadow hover:bg-green-700 transition"
@@ -109,6 +112,10 @@
                                             </a>
                                             @break
 
+                                        @case(\App\Enums\GridValueType::Date)
+                                            {{ \Carbon\Carbon::parse($value)->translatedFormat('d.m.Y') }}
+                                            @break
+
                                         @default
                                             {{ $value ?? '-' }}
                                     @endswitch
@@ -124,12 +131,13 @@
                                         <x-icon name="view"/>
                                     </a>
 
-                                    {{-- Edit --}}
-                                    <a href="{{ route($editUrl, $item->id) }}"
-                                       class="sidebar-icon-button text-yellow-500 hover:text-yellow-600"
-                                       title="{{__('label.edit')}}">
-                                        <x-icon name="edit"/>
-                                    </a>
+                                    @if ($routeEditExists)
+                                        <a href="{{ route($editUrl, $item->id) }}"
+                                           class="sidebar-icon-button text-yellow-500 hover:text-yellow-600"
+                                           title="{{ __('label.edit') }}">
+                                            <x-icon name="edit"/>
+                                        </a>
+                                    @endif
 
                                     {{-- Delete --}}
                                     <button type="button"

@@ -7,6 +7,7 @@ use App\Http\Requests\Guest\GuestRequest;
 use App\Models\Guest;
 use App\Services\Core\ModelSearch;
 use App\Services\Guest\GuestService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\Factory;
@@ -41,6 +42,24 @@ class GuestController extends ResourceController
             'items' => $items,
             'className' => Guest::class,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function list(Request $request): JsonResponse
+    {
+        $modelSearch = new ModelSearch(Guest::class);
+        $id = $request->get("id", '');
+
+        if ($id) {
+            $items = $modelSearch->getByID(intval($id));
+        } else {
+            $items = $modelSearch->search($request);
+        }
+
+        return response()->json($items);
     }
 
     /**

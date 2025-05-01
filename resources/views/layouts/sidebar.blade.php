@@ -58,14 +58,27 @@
             @include('components.sidebarButton', [
                 'routeName' => 'room-sample.index',
                 'iconName' => 'room-template',
-                'label' => 'Room Samples'
+                'label' => __('property.room-sample.header')
             ])
 
             @include('components.sidebarButton', [
                 'routeName' => 'room.index',
                 'iconName' => 'bed',
-                'label' => 'Rooms'
+                'label' => __('property.room.header')
             ])
+
+            @include('components.sidebarButton', [
+                'routeName' => 'guest.index',
+                'iconName' => 'user',
+                'label' => __('property.guest.header')
+            ])
+
+            @include('components.sidebarButton', [
+                'routeName' => 'booking.index',
+                'iconName' => 'booking',
+                'label' => __('property.booking.header')
+            ])
+
 
             <a href="#analytics" class="sidebar-link">
                 <x-icon name="bar-chart"/>

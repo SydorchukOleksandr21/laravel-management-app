@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\GridValueType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int id
@@ -39,6 +40,14 @@ class Room extends AbstractModel
     public function roomSample(): BelongsTo
     {
         return $this->belongsTo(RoomSample::class);
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
     }
 
     /**

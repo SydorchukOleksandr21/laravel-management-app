@@ -96,4 +96,21 @@ class User extends Authenticatable
             $this->positions()->detach($position);
         }
     }
+
+    /**
+     * @param array $roles
+     * @return bool
+     */
+    public function hasRole(array $roles): bool
+    {
+        return $this->positions()->whereIn('name', $roles)->exists();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasAnyRole(): bool
+    {
+        return $this->positions()->exists();
+    }
 }
