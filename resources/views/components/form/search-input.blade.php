@@ -15,7 +15,10 @@
 
 <div class="mb-4 relative">
     <label for="{{ $property }}" class="block text-sm font-medium text-gray-700">
-        {{ $label ?? '' }}{{ $required ? ' *' : '' }}
+        {{ $label ?? '' }}
+        @if($required)
+            <span class="marker-important">*</span>
+        @endif
     </label>
     <input
         type="text"
@@ -39,6 +42,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const customDataField = 'data-json';
+
         const input = document.getElementById('search-input-{{ $property }}');
         const hiddenInput = document.getElementById('hidden-input-{{ $property }}');
         const resultsContainer = document.getElementById('search-results-{{ $property }}');
@@ -54,6 +59,8 @@
 
                     if (data && data['{{ $labelField }}']) {
                         input.value = data['{{ $labelField }}'];
+                        hiddenInput.setAttribute(customDataField, JSON.stringify(data));
+                        hiddenInput.dispatchEvent(new Event('searchInputChange'));
                         input.dispatchEvent(new Event('input')); // тригеримо подію input
                     }
                 })
@@ -82,10 +89,13 @@
                             const li = document.createElement('li');
                             li.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-200');
                             li.textContent = item['{{ $labelField }}'] ?? '';
+
                             li.addEventListener('click', function () {
                                 input.value = item['{{ $labelField }}'];
                                 hiddenInput.value = item.id;
+                                hiddenInput.setAttribute(customDataField, JSON.stringify(item));
                                 resultsContainer.classList.add('hidden');
+                                hiddenInput.dispatchEvent(new Event('searchInputChange'));
                             });
                             resultsContainer.appendChild(li);
                         });

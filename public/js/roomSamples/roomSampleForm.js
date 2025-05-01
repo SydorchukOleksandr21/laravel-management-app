@@ -105,7 +105,8 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const url = form.getAttribute("action");
-        const method = form.getAttribute("method");
+        const hiddenInput = form.querySelector('input[name="_method"]');
+        const method = hiddenInput.getAttribute("value");
 
         // Send the data as a JSON object in a POST request
         fetch(url, {

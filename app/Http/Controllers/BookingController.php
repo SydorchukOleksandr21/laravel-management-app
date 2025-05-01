@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\base\Controller;
 use App\Http\Requests\Booking\BookingRequest;
+use App\Models\Booking;
 use App\Services\Booking\BookingService;
+use App\Services\Core\ModelSearch;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Mockery\Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Random\RandomException;
 
 class BookingController extends Controller
 {
@@ -21,9 +29,14 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): Factory|Application|View
     {
-        //
+        $items = (new ModelSearch(Booking::class))->search($request);
+
+        return view('rooms.index', [
+            'items' => $items,
+            'className' => Booking::class,
+        ]);
     }
 
     /**
@@ -35,51 +48,31 @@ class BookingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param BookingRequest $request
+     * @return RedirectResponse
+     * @throws RandomException
      */
-    public function store(BookingRequest $request): JsonResponse
+    public function store(BookingRequest $request): RedirectResponse
     {
-        try {
-            $validated = $request->validated();
+        $validated = $request->validated();
 
-            $booking = $this->bookingService->create(
-                guestId: $validated['guest_id'],
-                roomId: $validated['room_id'],
-                dateStart: $validated['date_start'],
-                dateEnd: $validated['date_end']
-            );
+        $booking = $this->bookingService->create(
+            guestId: $validated['guest_id'],
+            roomId: $validated['room_id'],
+            dateStart: $validated['date_start'],
+            dateEnd: $validated['date_end']
+        );
 
-            return response()->json([
-                'id' => $booking->id,
-            ], 201);
-
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Failed to create booking'], 500);
-        }
+        return redirect()->route('booking.show', ["model" => $booking]);
     }
 
     /**
-     * Display the specified resource.
+     * @param Booking $model
+     * @return Factory|View|Application
      */
-    public function show(string $id)
+    public function show(Booking $model): Factory|View|Application
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return view('bookings.show', compact('model'));
     }
 
     /**

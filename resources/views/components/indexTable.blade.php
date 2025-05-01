@@ -24,6 +24,8 @@
         $viewUrl = $viewUrl ?? $urlPrefix . '.show';
         $editUrl = $editUrl ?? $urlPrefix . '.edit';
         $deleteUrl = $deleteUrl ?? $urlPrefix . '.destroy';
+
+        $routeEditExists = \Illuminate\Support\Facades\Route::has($editUrl);
     @endphp
 
     <div class="container mx-auto py-6 px-4">
@@ -110,6 +112,10 @@
                                             </a>
                                             @break
 
+                                        @case(\App\Enums\GridValueType::Date)
+                                            {{ \Carbon\Carbon::parse($value)->translatedFormat('d.m.Y') }}
+                                            @break
+
                                         @default
                                             {{ $value ?? '-' }}
                                     @endswitch
@@ -125,12 +131,13 @@
                                         <x-icon name="view"/>
                                     </a>
 
-                                    {{-- Edit --}}
-                                    <a href="{{ route($editUrl, $item->id) }}"
-                                       class="sidebar-icon-button text-yellow-500 hover:text-yellow-600"
-                                       title="{{__('label.edit')}}">
-                                        <x-icon name="edit"/>
-                                    </a>
+                                    @if ($routeEditExists)
+                                        <a href="{{ route($editUrl, $item->id) }}"
+                                           class="sidebar-icon-button text-yellow-500 hover:text-yellow-600"
+                                           title="{{ __('label.edit') }}">
+                                            <x-icon name="edit"/>
+                                        </a>
+                                    @endif
 
                                     {{-- Delete --}}
                                     <button type="button"

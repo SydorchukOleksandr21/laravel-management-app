@@ -73,6 +73,13 @@
                 'label' => __('property.guest.header')
             ])
 
+            @include('components.sidebarButton', [
+                'routeName' => 'booking.index',
+                'iconName' => 'booking',
+                'label' => __('property.booking.header')
+            ])
+
+
             <a href="#analytics" class="sidebar-link">
                 <x-icon name="bar-chart"/>
                 <span>Analytics</span>

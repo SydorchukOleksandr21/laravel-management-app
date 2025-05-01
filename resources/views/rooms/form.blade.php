@@ -57,7 +57,7 @@
 
         <x-form.search-input
             :item="$model"
-            url="{{ route('room-sample.list') }}"
+            url="{{ route('api.room-sample.list') }}"
             placeholder="Search for room sample..."
             property="room_sample_id"
             label="Room Sample"

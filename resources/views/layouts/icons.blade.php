@@ -121,4 +121,14 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
     </symbol>
+
+    <symbol id="cuticon-booking" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6 2H16a2 2 0 0 1 2 2v16" />
+        <path d="M6 2v20" />
+        <path d="M9 7h6" />
+        <path d="M9 11h6" />
+    </symbol>
+
 </svg>
